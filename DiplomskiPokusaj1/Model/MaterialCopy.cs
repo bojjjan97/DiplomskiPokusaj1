@@ -11,6 +11,7 @@ namespace DiplomskiPokusaj1.Model
     {   
         [Required]
         public string Id { get; set; }
+        public string UniqueCode { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<Rent>  Rents { get; set; }

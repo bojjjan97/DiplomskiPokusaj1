@@ -41,9 +41,11 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET api/<GenreController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<ViewGenreDTO>> Get(string id)
         {
-            return "value";
+            var result = await genreRepository.Get(id);
+
+            return Ok(mapper.Map<ViewGenreDTO>(result));
         }
 
         // POST api/<GenreController>

@@ -26,10 +26,9 @@ namespace DiplomskiPokusaj1.Repository
         {
             Category newCategory = new Category()
             {
-                Id = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6),
+                Id = Guid.NewGuid().ToString(),
                 Name = category.Name,
                 Description = category.Description,
-                Materials = new List<Material>(),
                 CreatedAt = DateTime.Now
 
             };
@@ -40,26 +39,47 @@ namespace DiplomskiPokusaj1.Repository
             return trackedEntity.Entity;
         }
 
-        public Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            var entityToDelete = await Get(id);
+            if (entityToDelete == null)
+            {
+                return false;
+            }
+            entityToDelete.DeletedAt = DateTime.Now;
+            databaseContext.Categories.Update(entityToDelete);
+            await databaseContext.SaveChangesAsync();
+            return true;
         }
 
-        public Task<Category> Get(string id)
+        public async Task<Category> Get(string id)
         {
-            throw new NotImplementedException();
+            return await databaseContext.Categories
+                .Where(category => category.Id == id && category.DeletedAt == null)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<ICollection<Category>> GetAll()
         {
             return await databaseContext.Categories
-                .Where(category => category.DeletedAt == null)
-                .Include(categoty => categoty.Materials).ToListAsync();
+                .Where(category => category.DeletedAt == null).ToListAsync();
         }
 
-        public Task<Category> Update(string id, Category category)
+        public async Task<Category> Update(string id, Category category)
         {
-            throw new NotImplementedException();
+            var entityToUpdate = await Get(id);
+            if (entityToUpdate == null)
+            {
+                return null;
+            }
+
+            entityToUpdate.Name = category.Name;
+            entityToUpdate.Description = category.Description;
+            entityToUpdate.UpdatedAt = DateTime.Now;
+
+            var trackedEntity = databaseContext.Categories.Update(entityToUpdate);
+            await databaseContext.SaveChangesAsync();
+            return trackedEntity.Entity;
         }
     }
 }

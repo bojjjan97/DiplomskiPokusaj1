@@ -18,15 +18,50 @@ namespace MassiveDynamicApi.DTO.Automapper
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, PublicUserDTO>().ReverseMap();
 
-            // CreateMap<Category, CategoryDTO>()
-            //   .ForMember(mat => mat.Materials, opt => opt.MapFrom(src => src.Materials.Select(c => c.Id)))
-            // .ReverseMap();
-
             CreateMap<Genre, ViewGenreDTO>()
                 .ReverseMap();
             CreateMap<Genre, CreateGenreDTO>()
                 .ReverseMap();
             CreateMap<Genre, UpdateGenreDTO>()
+                .ReverseMap();
+
+            CreateMap<Category, CreateCategoryDTO>()
+                .ReverseMap();
+            CreateMap<Category, ViewCategoryDTO>()
+                .ReverseMap();
+            CreateMap<Category, UpdateCategoryDTO>()
+                .ReverseMap();
+
+            CreateMap<Author, CreateAuthorDTO>()
+                .ReverseMap();
+            CreateMap<Author, ViewAuthorDTO>()
+                .ReverseMap();
+            CreateMap<Author, UpdateAuthorDTO>()
+                .ReverseMap();
+
+
+            CreateMap<Address, CreateAddressDTO>()
+                .ReverseMap();
+            CreateMap<Address, ViewAddressDTO>()
+                .ReverseMap();
+            CreateMap<Address, UpdateAddressDTO>()
+                .ReverseMap();
+
+            CreateMap<Publisher, CreatePublisherDTO>()
+                .ReverseMap();
+            CreateMap<Publisher, ViewPublisherDTO>()
+                .ReverseMap();
+            CreateMap<Publisher, UpdatePublisherDTO>()
+                .ReverseMap();
+
+            CreateMap<Material, CreateMaterialDTO>()
+                .ReverseMap();
+            CreateMap<Material, ViewMaterialDTO>()
+                .ReverseMap();
+            CreateMap<Material, UpdateMaterialDTO>()
+                .ReverseMap();
+
+            CreateMap<MaterialCopy, ViewMaterialCopyDTO>()
                 .ReverseMap();
 
         }

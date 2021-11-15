@@ -17,6 +17,7 @@ namespace DiplomskiPokusaj1.Repository
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Library> Libraries { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<MaterialCopy> MaterialCopies { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Rent> Rents { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
