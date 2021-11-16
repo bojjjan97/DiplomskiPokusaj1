@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DiplomskiPokusaj1.DTO.Create;
+using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
@@ -64,14 +65,26 @@ namespace DiplomskiPokusaj1.Controllers
 
         // PUT api/<MaterialController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult<ViewMaterialDTO>> Put(string id, [FromBody] UpdateMaterialDTO updateMaterialDTO)
         {
+            var result = await materialRepository.Update(id, updateMaterialDTO);
+
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(mapper.Map<ViewMaterialDTO>(result));
+            }
         }
 
         // DELETE api/<MaterialController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
+            var result = await materialRepository.Delete(id);
+            return result ? Ok() : BadRequest();
         }
     }
 }

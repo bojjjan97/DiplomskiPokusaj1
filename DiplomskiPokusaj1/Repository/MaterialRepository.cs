@@ -55,9 +55,17 @@ namespace DiplomskiPokusaj1.Repository
             return trackedEntity.Entity;
         }
 
-        public Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            var entityToDelete = await Get(id);
+            if (entityToDelete == null)
+            {
+                return false;
+            }
+            entityToDelete.DeletedAt = DateTime.Now;
+            databaseContext.Materials.Update(entityToDelete);
+            await databaseContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Material> Get(string id)
@@ -84,9 +92,29 @@ namespace DiplomskiPokusaj1.Repository
                .ToListAsync();
         }
 
-        public Task<Material> Update(string id, UpdateMaterialDTO material)
+        public async Task<Material> Update(string id, UpdateMaterialDTO material)
         {
-            throw new NotImplementedException();
+            var entityToUpdate = await Get(id);
+            if (entityToUpdate == null)
+            {
+                return null;
+            }
+
+            entityToUpdate.Title = material.Title;
+            entityToUpdate.Description = material.Description;
+            entityToUpdate.Isbn = material.Isbn;
+            entityToUpdate.PageNumber = material.PageNumber;
+            entityToUpdate.UpdatedAt = DateTime.Now;
+
+            entityToUpdate.Authors = await databaseContext.Authors.Where(author => material.AuthorsIds.Contains(author.Id)).ToListAsync();
+            entityToUpdate.Categories = await databaseContext.Categories.Where(category => material.CategoriesIds.Contains(category.Id)).ToListAsync();
+            entityToUpdate.Genres = await databaseContext.Genres.Where(genre => material.GenresIds.Contains(genre.Id)).ToListAsync();
+            entityToUpdate.Publishers = await databaseContext.Publishers.Where(publisher => material.PublisersIds.Contains(publisher.Id)).Include(publisher => publisher.Address).ToListAsync();
+
+
+            var trackedEntity = databaseContext.Materials.Update(entityToUpdate);
+            await databaseContext.SaveChangesAsync();
+            return trackedEntity.Entity;
         }
     }
 }

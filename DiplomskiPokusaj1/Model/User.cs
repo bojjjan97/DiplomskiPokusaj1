@@ -21,7 +21,8 @@ namespace DiplomskiPokusaj1.Model
 
         public virtual Address Address { get; set; }
         public virtual ICollection<Rent> Rents { get; set; }
-        public virtual ICollection<Library> Libraries { get; set; }
+        public virtual Library Library { get; set; }
+        public string LibraryId { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
 
         [Required]

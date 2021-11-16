@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DiplomskiPokusaj1.DTO.View
+namespace DiplomskiPokusaj1.DTO.Create
 {
-    public class ViewMaterialCopyDTO
-    {   
-        public string Id { get; set; }
+    public class CreateMaterialCopyDTO
+    {
         public string UniqueCode { get; set; }
+
         public string MaterialId { get; set; }
     }
 }

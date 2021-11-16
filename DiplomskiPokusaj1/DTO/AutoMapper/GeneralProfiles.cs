@@ -63,6 +63,24 @@ namespace MassiveDynamicApi.DTO.Automapper
 
             CreateMap<MaterialCopy, ViewMaterialCopyDTO>()
                 .ReverseMap();
+            CreateMap<MaterialCopy, CreateMaterialCopyDTO>()
+                .ReverseMap();
+            CreateMap<MaterialCopy, UpdateMaterialCopyDTO>()
+                .ReverseMap();
+
+            CreateMap<Library, CreateLibraryDTO>()
+                .ReverseMap();
+            CreateMap<Library, ViewLibraryDTO>()
+                .ReverseMap();
+            CreateMap<Library, UpdateLibraryDTO>()
+                .ReverseMap();
+
+            CreateMap<Reservation, ViewReservationDTO>()
+                .ReverseMap();
+            CreateMap<Reservation, CreateReservationDTO>()
+                .ReverseMap();
+            CreateMap<Reservation, UpdateReservationDTO>()
+                .ReverseMap();
 
         }
     }

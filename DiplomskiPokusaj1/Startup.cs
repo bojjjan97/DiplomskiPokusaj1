@@ -122,6 +122,11 @@ namespace DiplomskiPokusaj1
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IPublisherRepository, PublisherRepository>();
             services.AddScoped<IMaterialRepository, MaterialRepository>();
+            services.AddScoped<IMaterialCopyRepository, MaterialCopyRepository>();
+            services.AddScoped<ILibraryRepository, LibraryRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+
+
 
             services.AddCors();
         }

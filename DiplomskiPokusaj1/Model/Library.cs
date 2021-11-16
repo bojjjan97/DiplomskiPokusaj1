@@ -16,7 +16,8 @@ namespace DiplomskiPokusaj1.Model
         public string Email { get; set; }
 
         public virtual Address Address { get; set; }
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Employees { get; set; }
+        public IEnumerable<string> EmployeesIds => Employees.Select(employee => employee.Id).ToList();
         public virtual ICollection<Material> Materials { get; set; }
 
         [Required]

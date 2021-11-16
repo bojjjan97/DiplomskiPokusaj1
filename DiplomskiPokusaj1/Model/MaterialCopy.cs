@@ -16,6 +16,7 @@ namespace DiplomskiPokusaj1.Model
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<Rent>  Rents { get; set; }
         public virtual Material Material { get; set; }
+        public string MaterialId { get; set; }
         [Required]
         public DateTime CreatedAt { get ; set ; }
         public DateTime? UpdatedAt { get ; set ; }
