@@ -77,7 +77,7 @@ namespace DiplomskiPokusaj1.Controllers
             }
             else
             {
-                return Ok(mapper.Map<ViewAuthorDTO>(result));
+                return Ok(mapper.Map<ViewReservationDTO>(result));
             }
         }
 

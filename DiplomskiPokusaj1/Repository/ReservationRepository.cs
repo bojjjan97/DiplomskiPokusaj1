@@ -87,10 +87,9 @@ namespace DiplomskiPokusaj1.Repository
                 return null;
             }
 
-            if(updateReservationDTO.Status == "reserved")
-            {
+            
                 entityToUpdate.Status = "canceled";
-            }
+            
             
 
             var trackedEntity = databaseContext.Reservations.Update(entityToUpdate);
@@ -102,13 +101,15 @@ namespace DiplomskiPokusaj1.Repository
         {
             var reservations = databaseContext.Reservations
                 .Include(reservation => reservation.MaterialCopies)
-                .Any(reservation => reservation.MaterialCopiesIds.Contains(materialCopy.Id) &&
-                reservation.DeletedAt == null && reservation.Status == "reserved");
+                .Where(reservation => reservation.DeletedAt == null && reservation.Status == "reserved")
+                .ToList()
+                .Any(reservation => reservation.MaterialCopiesIds.Contains(materialCopy.Id));
 
             var rents = databaseContext.Rents
                 .Include(rent => rent.MaterialCopies)
-                .Any(rent => rent.MaterialCopiesIds.Contains(materialCopy.Id) &&
-                rent.DeletedAt == null && rent.CheckedIn == false);
+                .Where(rent => rent.DeletedAt == null && rent.CheckedIn == false)
+                .ToList()
+                .Any(rent => rent.MaterialCopiesIds.Contains(materialCopy.Id));
 
             return reservations && rents;
         }

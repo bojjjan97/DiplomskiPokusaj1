@@ -13,7 +13,7 @@ namespace DiplomskiPokusaj1.Model
 
         public bool CheckedIn { get; set; } = false;
         public DateTime StartDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
 
         public virtual User User { get; set; }
         public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }

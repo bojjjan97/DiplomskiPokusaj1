@@ -34,6 +34,7 @@ namespace DiplomskiPokusaj1.Repository
                 Employees = await databaseContext.Users.Where(user => library.EmployeesIds.Contains(user.Id)).ToListAsync(),
                 Address = new Address
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Line1 = library.Address.Line1,
                     Line2 = library.Address.Line2,
                     City = library.Address.City,
