@@ -17,8 +17,11 @@ namespace DiplomskiPokusaj1.Model
         public string UserId { get; set; }
         public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }
         public IEnumerable<string> MaterialCopiesIds => MaterialCopies.Select(materialCopy => materialCopy.Id).ToList();
+    
+        
         public virtual Rent Rent { get; set; }
         public string RentId { get; set; }
+        
         [Required]
         public DateTime CreatedAt { get ; set ; }
         public DateTime? UpdatedAt { get ; set ; }

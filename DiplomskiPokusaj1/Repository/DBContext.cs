@@ -26,5 +26,17 @@ namespace DiplomskiPokusaj1.Repository
         {
 
         }
+
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Rent>()
+                .HasOne(rent => rent.Reservation)
+                .WithOne(reservation => reservation.Rent)
+                .HasForeignKey<Reservation>(reservation => reservation.RentId);
+        }
+        
     }
 }

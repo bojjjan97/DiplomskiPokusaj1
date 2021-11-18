@@ -107,7 +107,7 @@ namespace DiplomskiPokusaj1.Repository
 
             var rents = databaseContext.Rents
                 .Include(rent => rent.MaterialCopies)
-                .Where(rent => rent.DeletedAt == null && rent.CheckedIn == false)
+                .Where(rent => rent.DeletedAt == null && rent.ReturnDate == null)
                 .ToList()
                 .Any(rent => rent.MaterialCopiesIds.Contains(materialCopy.Id));
 

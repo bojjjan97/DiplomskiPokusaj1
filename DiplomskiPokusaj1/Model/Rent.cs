@@ -11,15 +11,18 @@ namespace DiplomskiPokusaj1.Model
     {
         public string Id { get; set; }
 
-        public bool CheckedIn { get; set; } = false;
         public DateTime StartDate { get; set; }
         public DateTime? ReturnDate { get; set; }
 
         public virtual User User { get; set; }
-        public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }
+        public string UserId { get; set; }
 
+        public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }
         public IEnumerable<string> MaterialCopiesIds => MaterialCopies.Select(materialCopy => materialCopy.Id).ToList();
+       
         public virtual Reservation Reservation { get; set; }
+        public string ReservationId { get; set; }
+
         [Required]
         public DateTime CreatedAt { get ; set ; }
         public DateTime? UpdatedAt { get ; set ; }

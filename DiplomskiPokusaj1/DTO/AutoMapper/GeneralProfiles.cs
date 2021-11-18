@@ -15,8 +15,8 @@ namespace MassiveDynamicApi.DTO.Automapper
     {
         public GeneralProfiles()
         {
-            CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<User, PublicUserDTO>().ReverseMap();
+            CreateMap<User, ViewUserDTO>().ReverseMap();
+            CreateMap<User, ViewPublicUserDTO>().ReverseMap();
 
             CreateMap<Genre, ViewGenreDTO>()
                 .ReverseMap();
@@ -80,6 +80,11 @@ namespace MassiveDynamicApi.DTO.Automapper
             CreateMap<Reservation, CreateReservationDTO>()
                 .ReverseMap();
             CreateMap<Reservation, UpdateReservationDTO>()
+                .ReverseMap();
+
+            CreateMap<Rent, ViewRentDTO>()
+                .ReverseMap();
+            CreateMap<Rent, CreateRentDTO>()
                 .ReverseMap();
 
         }

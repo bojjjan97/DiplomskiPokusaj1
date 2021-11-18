@@ -11,6 +11,7 @@ using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.DTO;
 using DiplomskiPokusaj1.Helper;
 using Microsoft.AspNetCore.Authorization;
+using DiplomskiPokusaj1.DTO.View;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,7 +38,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        public async Task<ActionResult<List<UserDTO>>> Get()
+        public async Task<ActionResult<List<ViewUserDTO>>> Get()
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
             var result = await userRepository.GetAll(userRequiringAccess);
@@ -46,12 +47,12 @@ namespace DiplomskiPokusaj1.Controllers
 
             if (userRequiringAccess != null && (await userManager.IsInRoleAsync(userRequiringAccess, "Administrator")))
             {
-                var dto = _mapper.Map<List<UserDTO>>(result);
+                var dto = _mapper.Map<List<ViewUserDTO>>(result);
                 return Ok(dto);
             }
             else
             {
-                var dto = _mapper.Map<List<PublicUserDTO>>(result);
+                var dto = _mapper.Map<List<ViewPublicUserDTO>>(result);
                 return Ok(dto);
             }
 
@@ -59,7 +60,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PublicUserDTO>> Get(string id)
+        public async Task<ActionResult<ViewPublicUserDTO>> Get(string id)
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
 
@@ -75,18 +76,18 @@ namespace DiplomskiPokusaj1.Controllers
                 || await userManager.IsInRoleAsync(userRequiringAccess, "Secretary")
                 ))
             {
-                return Ok(_mapper.Map<UserDTO>(result));
+                return Ok(_mapper.Map<ViewPublicUserDTO>(result));
             }
             else
             {
-                return Ok(_mapper.Map<PublicUserDTO>(result));
+                return Ok(_mapper.Map<ViewPublicUserDTO>(result));
             }
 
         }
 
         // POST api/<UserController>
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> Post([FromBody] CreateUserDTO userDTO)
+        public async Task<ActionResult<ViewUserDTO>> Post([FromBody] CreateUserDTO userDTO)
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
@@ -96,7 +97,7 @@ namespace DiplomskiPokusaj1.Controllers
                     var user = await userRepository.Create(userDTO, userRequiringAccess);
                     if (user != null)
                     {
-                        return Ok(_mapper.Map<UserDTO>(user));
+                        return Ok(_mapper.Map<ViewUserDTO>(user));
                     }
                 }
                 catch (Exception e)
@@ -110,7 +111,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserDTO>> Patch(string id, [FromBody] UserDTO userDTO)
+        public async Task<ActionResult<ViewUserDTO>> Patch(string id, [FromBody] ViewUserDTO userDTO)
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
 
@@ -119,7 +120,7 @@ namespace DiplomskiPokusaj1.Controllers
 
             if (result != null)
             {
-                return Ok(_mapper.Map<UserDTO>(result));
+                return Ok(_mapper.Map<ViewUserDTO>(result));
             }
             else
             {

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DiplomskiPokusaj1.DTO
+namespace DiplomskiPokusaj1.DTO.View
 {
-    public class PublicUserDTO
+    public class ViewUserDTO
     {
         public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ViewAddressDTO ViewAddressDTO { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Role { get; set; }
         public string ClientId { get; set; }
     }
 }
