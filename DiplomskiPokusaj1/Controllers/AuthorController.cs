@@ -5,6 +5,7 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<AuthorController>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<ViewAuthorDTO>>> Get()
         {
             var result = await authorRepository.GetAll();
@@ -39,6 +41,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET api/<AuthorController>/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ViewAuthorDTO>> Get(string id)
         {
             var result = await authorRepository.Get(id);
@@ -48,6 +51,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // POST api/<AuthorController>
         [HttpPost]
+        [Authorize()]
         public async Task<ActionResult<ViewAuthorDTO>> Post([FromBody] CreateAuthorDTO createAuthorDTO)
         {
             var author = mapper.Map<Author>(createAuthorDTO);

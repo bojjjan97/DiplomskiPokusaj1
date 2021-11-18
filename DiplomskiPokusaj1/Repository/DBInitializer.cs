@@ -43,17 +43,17 @@ namespace DiplomskiPokusaj1.Repository
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
 
-            if (!roleManager.RoleExistsAsync("Secretary").Result)
+            if (!roleManager.RoleExistsAsync("Librarian").Result)
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = "Secretary";
+                role.Name = "Librarian";
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
 
-            if (!roleManager.RoleExistsAsync("Client").Result)
+            if (!roleManager.RoleExistsAsync("User").Result)
             {
                 IdentityRole role = new IdentityRole();
-                role.Name = "Client";
+                role.Name = "User";
                 IdentityResult roleResult = roleManager.CreateAsync(role).Result;
             }
         }

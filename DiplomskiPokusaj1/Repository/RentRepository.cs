@@ -27,6 +27,7 @@ namespace DiplomskiPokusaj1.Repository
             if (rent.ReservationId != null)
             {
                 var reservation = await databaseContext.Reservations.Where(reservation => reservation.Id == rent.ReservationId)
+                    .Where(reservation => reservation.Status == "reserved")
                     .Include(reservation => reservation.MaterialCopies)
                     .Include(reservation => reservation.Rent)
                     .FirstOrDefaultAsync();
@@ -34,12 +35,21 @@ namespace DiplomskiPokusaj1.Repository
                 if(reservation != null)
                 { 
                     listToRent.AddRange(reservation.MaterialCopies);
+                    reservation.Status = "taken";
+                }
+                else
+                {
+                    return null;
                 }
             }
-
+           
             var copiesToAdd2 = databaseContext.MaterialCopies.Where(materialCopy => rent.MaterialCopiesIds.Contains(materialCopy.Id));
 
-            listToRent.AddRange(copiesToAdd2);
+            if(copiesToAdd2 != null)
+            { 
+                listToRent.AddRange(copiesToAdd2);
+            }
+            
 
             Rent newRent = new Rent
             {
@@ -76,6 +86,7 @@ namespace DiplomskiPokusaj1.Repository
             return await databaseContext.Rents
                 .Include(rent => rent.MaterialCopies)
                     .ThenInclude(materialCopy => materialCopy.Material)
+                .Include(rent => rent.Reservation)
                 .Where(rent => rent.Id == id && rent.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
@@ -85,6 +96,7 @@ namespace DiplomskiPokusaj1.Repository
             return await databaseContext.Rents
               .Include(rent => rent.MaterialCopies)
                    .ThenInclude(materialCopy => materialCopy.Material)
+              .Include(rent => rent.Reservation)
               .Where(rent => rent.DeletedAt == null)
               .ToListAsync();
         }

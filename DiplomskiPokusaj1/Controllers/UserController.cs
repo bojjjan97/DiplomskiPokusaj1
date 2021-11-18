@@ -38,6 +38,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
+        [Authorize(Roles = "Administrator,Librarian")]
         public async Task<ActionResult<List<ViewUserDTO>>> Get()
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
@@ -87,6 +88,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // POST api/<UserController>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<ViewUserDTO>> Post([FromBody] CreateUserDTO userDTO)
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
@@ -111,6 +113,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<ViewUserDTO>> Patch(string id, [FromBody] ViewUserDTO userDTO)
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
@@ -130,6 +133,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<bool>> Delete(string id)
         {
             User userToDelete = await userManager.FindByIdAsync(id);
