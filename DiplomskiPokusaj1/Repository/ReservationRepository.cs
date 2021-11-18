@@ -68,6 +68,7 @@ namespace DiplomskiPokusaj1.Repository
                 .Include(reservation => reservation.MaterialCopies)
                 .ThenInclude(materialCopies => materialCopies.Material)
                 .Where(reservation => reservation.Id == id && reservation.DeletedAt == null)
+                .Include(reservation => reservation.Rent)
                 .FirstOrDefaultAsync();
         }
 
@@ -76,6 +77,7 @@ namespace DiplomskiPokusaj1.Repository
             return await databaseContext.Reservations
                 .Include(reservation => reservation.MaterialCopies)
                 .ThenInclude(materialCopies => materialCopies.Material)
+                .Include(reservation => reservation.Rent)
                .Where(reservation => reservation.DeletedAt == null).ToListAsync();
         }
 

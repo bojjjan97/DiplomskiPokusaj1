@@ -32,10 +32,12 @@ namespace DiplomskiPokusaj1.Repository
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Rent>()
-                .HasOne(rent => rent.Reservation)
-                .WithOne(reservation => reservation.Rent)
-                .HasForeignKey<Reservation>(reservation => reservation.RentId);
+           /* builder.Entity<Reservation>()
+                .HasOne(reservation => reservation.Rent)
+                .WithOne(rent => rent.Reservation)
+                .HasForeignKey<Rent>(rent => rent.ReservationId)
+                .
+                ; */
         }
         
     }

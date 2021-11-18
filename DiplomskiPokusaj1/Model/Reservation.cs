@@ -20,7 +20,7 @@ namespace DiplomskiPokusaj1.Model
     
         
         public virtual Rent Rent { get; set; }
-        public string RentId { get; set; }
+        public string RentId => Rent.Id;
         
         [Required]
         public DateTime CreatedAt { get ; set ; }

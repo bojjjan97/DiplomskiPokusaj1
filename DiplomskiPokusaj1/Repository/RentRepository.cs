@@ -28,9 +28,13 @@ namespace DiplomskiPokusaj1.Repository
             {
                 var reservation = await databaseContext.Reservations.Where(reservation => reservation.Id == rent.ReservationId)
                     .Include(reservation => reservation.MaterialCopies)
+                    .Include(reservation => reservation.Rent)
                     .FirstOrDefaultAsync();
 
-                listToRent.AddRange(reservation.MaterialCopies);
+                if(reservation != null)
+                { 
+                    listToRent.AddRange(reservation.MaterialCopies);
+                }
             }
 
             var copiesToAdd2 = databaseContext.MaterialCopies.Where(materialCopy => rent.MaterialCopiesIds.Contains(materialCopy.Id));
