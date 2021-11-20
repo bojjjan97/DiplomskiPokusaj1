@@ -80,7 +80,7 @@ namespace DiplomskiPokusaj1.Repository
                .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Material>> GetAll(string authorId = null)
+        public async Task<ICollection<Material>> GetAll(string  authorId = null)
         {   
 
             if(authorId == null)
