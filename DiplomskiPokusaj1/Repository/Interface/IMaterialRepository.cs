@@ -10,7 +10,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
 {
     public interface IMaterialRepository
     {
-        public Task<ICollection<Material>> GetAll();
+        public Task<ICollection<Material>> GetAll(string authorIds = null);
         public Task<Material> Get(string id);
         public Task<Material> Create(CreateMaterialDTO material);
         public Task<Material> Update(string id, UpdateMaterialDTO material);

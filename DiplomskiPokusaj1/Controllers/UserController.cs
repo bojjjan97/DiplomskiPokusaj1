@@ -38,7 +38,7 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<UserController>
         [HttpGet]
-        [Authorize(Roles = "Administrator,Librarian")]
+        //[Authorize(Roles = "Administrator,Librarian")]
         public async Task<ActionResult<List<ViewUserDTO>>> Get()
         {
             User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);

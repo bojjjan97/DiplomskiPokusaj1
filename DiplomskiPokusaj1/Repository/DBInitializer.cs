@@ -20,7 +20,7 @@ namespace DiplomskiPokusaj1.Repository
             {
                 User user = new User();
                 user.UserName = "SuperAdmin";
-                user.Email = "bogdan@singularity.is";
+                user.Email = "bojan_borovcanin@hotmail.com";
                 user.Firstname = "Super";
                 user.Lastname = "Admin";
                 user.CreatedAt = DateTime.Now;

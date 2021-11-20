@@ -86,7 +86,17 @@ namespace DiplomskiPokusaj1.Repository
                 Email = userDTO.Email,
                 PhoneNumber = userDTO.PhoneNumber,
                 ClientId = userDTO.ClientId,
-                //Address = userDTO.AddressDTO;
+                Address = new Address
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Line1 = userDTO.AddressDTO.Line1,
+                    Line2 = userDTO.AddressDTO.Line2,
+                    City = userDTO.AddressDTO.City,
+                    PostalCode = userDTO.AddressDTO.PostalCode,
+                    Country = userDTO.AddressDTO.Country,
+                    CreatedAt = DateTime.Now
+
+                }
             };
 
             IdentityResult result = await userManager.CreateAsync(appUser, userDTO.Password);

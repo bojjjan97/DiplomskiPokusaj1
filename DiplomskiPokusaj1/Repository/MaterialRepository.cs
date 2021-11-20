@@ -80,9 +80,12 @@ namespace DiplomskiPokusaj1.Repository
                .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Material>> GetAll()
-        {
-            return await databaseContext.Materials
+        public async Task<ICollection<Material>> GetAll(string authorId = null)
+        {   
+
+            if(authorId == null)
+            {
+                return await databaseContext.Materials
                .Include(material => material.Authors)
                .Include(material => material.Categories)
                .Include(material => material.Genres)
@@ -90,6 +93,19 @@ namespace DiplomskiPokusaj1.Repository
                .Include(material => material.MaterialCopies)
                .Where(publisher => publisher.DeletedAt == null)
                .ToListAsync();
+            }
+            else
+            {
+                return await databaseContext.Materials
+               .Include(material => material.Authors)
+                    .Where( x => x.Authors.Select( y => y.Id).Contains(authorId))
+               .Include(material => material.Categories)
+               .Include(material => material.Genres)
+               .Include(material => material.Publishers)
+               .Include(material => material.MaterialCopies)
+               .Where(publisher => publisher.DeletedAt == null )
+               .ToListAsync();
+            }
         }
 
         public async Task<Material> Update(string id, UpdateMaterialDTO material)

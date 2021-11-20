@@ -30,9 +30,9 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<MaterialController>
         [HttpGet]
-        public async Task<ActionResult<List<ViewMaterialDTO>>> Get()
+        public async Task<ActionResult<List<ViewMaterialDTO>>> GetAll([FromQuery] string authorId)
         {
-            var result = await materialRepository.GetAll();
+            var result = await materialRepository.GetAll(authorId);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewMaterialDTO>>(result));
         }
