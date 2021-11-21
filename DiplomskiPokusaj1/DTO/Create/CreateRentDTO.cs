@@ -9,6 +9,7 @@ namespace DiplomskiPokusaj1.DTO.Create
     public class CreateRentDTO
     {
         public string UserId { get; set; }
+        public string LibraryId { get; set; }
         public IEnumerable<string> MaterialCopiesIds { get; set; }
         public  string ReservationId { get; set; }
     }

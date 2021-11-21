@@ -52,6 +52,7 @@ namespace DiplomskiPokusaj1.Controllers
         // POST api/<AuthorController>
         [HttpPost]
         [Authorize()]
+        [AllowAnonymous]
         public async Task<ActionResult<ViewAuthorDTO>> Post([FromBody] CreateAuthorDTO createAuthorDTO)
         {
             var author = mapper.Map<Author>(createAuthorDTO);

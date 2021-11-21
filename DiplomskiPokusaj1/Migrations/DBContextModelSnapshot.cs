@@ -245,6 +245,9 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("MaterialId")
                         .HasColumnType("varchar(255)");
 
@@ -255,6 +258,8 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
 
                     b.HasIndex("MaterialId");
 
@@ -303,6 +308,9 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("ReservationId")
                         .HasColumnType("varchar(255)");
 
@@ -320,7 +328,10 @@ namespace DiplomskiPokusaj1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("ReservationId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -341,6 +352,9 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Status")
                         .HasColumnType("longtext");
 
@@ -351,6 +365,8 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
 
                     b.HasIndex("UserId");
 
@@ -697,9 +713,15 @@ namespace DiplomskiPokusaj1.Migrations
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.MaterialCopy", b =>
                 {
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany()
+                        .HasForeignKey("LibraryId");
+
                     b.HasOne("DiplomskiPokusaj1.Model.Material", "Material")
                         .WithMany("MaterialCopies")
                         .HasForeignKey("MaterialId");
+
+                    b.Navigation("Library");
 
                     b.Navigation("Material");
                 });
@@ -715,13 +737,19 @@ namespace DiplomskiPokusaj1.Migrations
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Rent", b =>
                 {
-                    b.HasOne("DiplomskiPokusaj1.Model.Reservation", "Reservation")
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
                         .WithMany()
-                        .HasForeignKey("ReservationId");
+                        .HasForeignKey("LibraryId");
+
+                    b.HasOne("DiplomskiPokusaj1.Model.Reservation", "Reservation")
+                        .WithOne("Rent")
+                        .HasForeignKey("DiplomskiPokusaj1.Model.Rent", "ReservationId");
 
                     b.HasOne("DiplomskiPokusaj1.Model.User", "User")
                         .WithMany("Rents")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Library");
 
                     b.Navigation("Reservation");
 
@@ -730,9 +758,15 @@ namespace DiplomskiPokusaj1.Migrations
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Reservation", b =>
                 {
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany()
+                        .HasForeignKey("LibraryId");
+
                     b.HasOne("DiplomskiPokusaj1.Model.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Library");
 
                     b.Navigation("User");
                 });
@@ -882,6 +916,11 @@ namespace DiplomskiPokusaj1.Migrations
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Material", b =>
                 {
                     b.Navigation("MaterialCopies");
+                });
+
+            modelBuilder.Entity("DiplomskiPokusaj1.Model.Reservation", b =>
+                {
+                    b.Navigation("Rent");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.User", b =>

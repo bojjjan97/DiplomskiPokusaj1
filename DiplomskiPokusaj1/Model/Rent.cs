@@ -17,6 +17,9 @@ namespace DiplomskiPokusaj1.Model
         public virtual User User { get; set; }
         public string UserId { get; set; }
 
+        public virtual Library Library { get; set; }
+        public string LibraryId { get; set; }
+
         public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }
         public IEnumerable<string> MaterialCopiesIds => MaterialCopies.Select(materialCopy => materialCopy.Id).ToList();
        

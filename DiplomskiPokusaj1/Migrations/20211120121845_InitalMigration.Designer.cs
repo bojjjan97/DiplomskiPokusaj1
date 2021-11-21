@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomskiPokusaj1.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20211117095702_migration1")]
-    partial class migration1
+    [Migration("20211120121845_InitalMigration")]
+    partial class InitalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -247,6 +247,9 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("MaterialId")
                         .HasColumnType("varchar(255)");
 
@@ -257,6 +260,8 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
 
                     b.HasIndex("MaterialId");
 
@@ -305,6 +310,12 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ReservationId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime(6)");
 
@@ -318,6 +329,11 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("ReservationId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -338,7 +354,7 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("RentId")
+                    b.Property<string>("LibraryId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Status")
@@ -352,8 +368,7 @@ namespace DiplomskiPokusaj1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RentId")
-                        .IsUnique();
+                    b.HasIndex("LibraryId");
 
                     b.HasIndex("UserId");
 
@@ -700,9 +715,15 @@ namespace DiplomskiPokusaj1.Migrations
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.MaterialCopy", b =>
                 {
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany()
+                        .HasForeignKey("LibraryId");
+
                     b.HasOne("DiplomskiPokusaj1.Model.Material", "Material")
                         .WithMany("MaterialCopies")
                         .HasForeignKey("MaterialId");
+
+                    b.Navigation("Library");
 
                     b.Navigation("Material");
                 });
@@ -718,24 +739,36 @@ namespace DiplomskiPokusaj1.Migrations
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Rent", b =>
                 {
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany()
+                        .HasForeignKey("LibraryId");
+
+                    b.HasOne("DiplomskiPokusaj1.Model.Reservation", "Reservation")
+                        .WithOne("Rent")
+                        .HasForeignKey("DiplomskiPokusaj1.Model.Rent", "ReservationId");
+
                     b.HasOne("DiplomskiPokusaj1.Model.User", "User")
                         .WithMany("Rents")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Library");
+
+                    b.Navigation("Reservation");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Reservation", b =>
                 {
-                    b.HasOne("DiplomskiPokusaj1.Model.Rent", "Rent")
-                        .WithOne("Reservation")
-                        .HasForeignKey("DiplomskiPokusaj1.Model.Reservation", "RentId");
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany()
+                        .HasForeignKey("LibraryId");
 
                     b.HasOne("DiplomskiPokusaj1.Model.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Rent");
+                    b.Navigation("Library");
 
                     b.Navigation("User");
                 });
@@ -887,9 +920,9 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Navigation("MaterialCopies");
                 });
 
-            modelBuilder.Entity("DiplomskiPokusaj1.Model.Rent", b =>
+            modelBuilder.Entity("DiplomskiPokusaj1.Model.Reservation", b =>
                 {
-                    b.Navigation("Reservation");
+                    b.Navigation("Rent");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.User", b =>

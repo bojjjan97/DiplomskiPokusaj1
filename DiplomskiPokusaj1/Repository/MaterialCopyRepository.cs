@@ -23,7 +23,8 @@ namespace DiplomskiPokusaj1.Repository
             {
                 Id = Guid.NewGuid().ToString(),
                 UniqueCode = materialCopy.UniqueCode,
-                MaterialId = materialCopy.MaterialId
+                MaterialId = materialCopy.MaterialId,
+                LibraryId = materialCopy.LibraryId
             };
 
             var trackedEntity = await databaseContext.MaterialCopies.AddAsync(materialCopy1);

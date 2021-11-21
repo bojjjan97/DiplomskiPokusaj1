@@ -49,7 +49,11 @@ namespace DiplomskiPokusaj1.Repository
             { 
                 listToRent.AddRange(copiesToAdd2);
             }
-            
+
+            if (listToRent.Any(copy => copy.LibraryId != rent.LibraryId))
+            {
+                return null;
+            }
 
             Rent newRent = new Rent
             {
@@ -58,7 +62,8 @@ namespace DiplomskiPokusaj1.Repository
                 CreatedAt = DateTime.Now,
                 UserId = rent.UserId,
                 MaterialCopies = listToRent,
-                ReservationId = rent.ReservationId
+                ReservationId = rent.ReservationId,
+                LibraryId = rent.LibraryId
             };
 
             var trackedEntity = await databaseContext.Rents.AddAsync(newRent);

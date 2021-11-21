@@ -32,14 +32,18 @@ namespace DiplomskiPokusaj1.Repository
                 return null;
             }
 
+            if(copiesToReserve.Any(copy => copy.LibraryId != reservation.LibraryId))
+            {
+                return null;
+            }
 
             Reservation newReservation = new Reservation
             {
                 Id = Guid.NewGuid().ToString(),
                 Status = "reserved",
                 CreatedAt = DateTime.Now,
-                MaterialCopies = await databaseContext.MaterialCopies.Where(materialCopies => reservation.MaterialCopiesIds.Contains(materialCopies.Id)).ToListAsync()
-                
+                MaterialCopies = await databaseContext.MaterialCopies.Where(materialCopies => reservation.MaterialCopiesIds.Contains(materialCopies.Id)).ToListAsync(),
+                LibraryId = reservation.LibraryId
             };
 
             var trackedEntity = await databaseContext.Reservations.AddAsync(newReservation);

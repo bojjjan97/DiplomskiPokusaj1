@@ -8,6 +8,7 @@ namespace DiplomskiPokusaj1.DTO.Create
     public class CreateMaterialCopyDTO
     {
         public string UniqueCode { get; set; }
+        public string LibraryId { get; set; }
 
         public string MaterialId { get; set; }
     }

@@ -401,15 +401,17 @@ namespace DiplomskiPokusaj1.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Rents",
+                name: "Reservations",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CheckedIn = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateToReturn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LibraryId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -417,11 +419,17 @@ namespace DiplomskiPokusaj1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rents", x => x.Id);
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rents_AspNetUsers_UserId",
+                        name: "FK_Reservations_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Libraries_LibraryId",
+                        column: x => x.LibraryId,
+                        principalTable: "Libraries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -516,6 +524,8 @@ namespace DiplomskiPokusaj1.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UniqueCode = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    LibraryId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     MaterialId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -525,6 +535,12 @@ namespace DiplomskiPokusaj1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MaterialCopies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MaterialCopies_Libraries_LibraryId",
+                        column: x => x.LibraryId,
+                        principalTable: "Libraries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MaterialCopies_Materials_MaterialId",
                         column: x => x.MaterialId,
@@ -562,17 +578,18 @@ namespace DiplomskiPokusaj1.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "Rents",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateToReturn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RentId = table.Column<string>(type: "varchar(255)", nullable: true)
+                    LibraryId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ReservationId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -580,46 +597,25 @@ namespace DiplomskiPokusaj1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.PrimaryKey("PK_Rents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_AspNetUsers_UserId",
+                        name: "FK_Rents_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reservations_Rents_RentId",
-                        column: x => x.RentId,
-                        principalTable: "Rents",
+                        name: "FK_Rents_Libraries_LibraryId",
+                        column: x => x.LibraryId,
+                        principalTable: "Libraries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "MaterialCopyRent",
-                columns: table => new
-                {
-                    MaterialCopiesId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RentsId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MaterialCopyRent", x => new { x.MaterialCopiesId, x.RentsId });
                     table.ForeignKey(
-                        name: "FK_MaterialCopyRent_MaterialCopies_MaterialCopiesId",
-                        column: x => x.MaterialCopiesId,
-                        principalTable: "MaterialCopies",
+                        name: "FK_Rents_Reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalTable: "Reservations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MaterialCopyRent_Rents_RentsId",
-                        column: x => x.RentsId,
-                        principalTable: "Rents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -645,6 +641,33 @@ namespace DiplomskiPokusaj1.Migrations
                         name: "FK_MaterialCopyReservation_Reservations_ReservationsId",
                         column: x => x.ReservationsId,
                         principalTable: "Reservations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "MaterialCopyRent",
+                columns: table => new
+                {
+                    MaterialCopiesId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RentsId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaterialCopyRent", x => new { x.MaterialCopiesId, x.RentsId });
+                    table.ForeignKey(
+                        name: "FK_MaterialCopyRent_MaterialCopies_MaterialCopiesId",
+                        column: x => x.MaterialCopiesId,
+                        principalTable: "MaterialCopies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MaterialCopyRent_Rents_RentsId",
+                        column: x => x.RentsId,
+                        principalTable: "Rents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -718,6 +741,11 @@ namespace DiplomskiPokusaj1.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MaterialCopies_LibraryId",
+                table: "MaterialCopies",
+                column: "LibraryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MaterialCopies_MaterialId",
                 table: "MaterialCopies",
                 column: "MaterialId");
@@ -748,15 +776,25 @@ namespace DiplomskiPokusaj1.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rents_LibraryId",
+                table: "Rents",
+                column: "LibraryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rents_ReservationId",
+                table: "Rents",
+                column: "ReservationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rents_UserId",
                 table: "Rents",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_RentId",
+                name: "IX_Reservations_LibraryId",
                 table: "Reservations",
-                column: "RentId",
-                unique: true);
+                column: "LibraryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_UserId",
@@ -812,19 +850,19 @@ namespace DiplomskiPokusaj1.Migrations
                 name: "Genres");
 
             migrationBuilder.DropTable(
-                name: "MaterialCopies");
+                name: "Rents");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "MaterialCopies");
 
             migrationBuilder.DropTable(
                 name: "Publishers");
 
             migrationBuilder.DropTable(
-                name: "Materials");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Rents");
+                name: "Materials");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

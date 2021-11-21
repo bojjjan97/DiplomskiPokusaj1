@@ -1,4 +1,5 @@
 ﻿using DiplomskiPokusaj1.DTO.Create;
+using DiplomskiPokusaj1.DTO.Filter;
 using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
@@ -80,32 +81,54 @@ namespace DiplomskiPokusaj1.Repository
                .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Material>> GetAll(string  authorId = null)
-        {   
+        public async Task<ICollection<Material>> GetAll(FilterItemDTO filter = null)
+        {
 
-            if(authorId == null)
-            {
-                return await databaseContext.Materials
-               .Include(material => material.Authors)
-               .Include(material => material.Categories)
-               .Include(material => material.Genres)
-               .Include(material => material.Publishers)
-               .Include(material => material.MaterialCopies)
-               .Where(publisher => publisher.DeletedAt == null)
-               .ToListAsync();
+            var quariable = databaseContext.Materials
+              .Include(material => material.Authors)
+              .Include(material => material.Categories)
+              .Include(material => material.Genres)
+              .Include(material => material.Publishers)
+              .Include(material => material.MaterialCopies)
+              .Where(publisher => publisher.DeletedAt == null);
+
+            if (filter.AuthorIds != null)
+            {   
+                quariable = quariable.Where( material => material.Authors.Any( author => filter.AuthorIds.Contains(author.Id)));
             }
-            else
+
+            if(filter.CategoryIds != null)
             {
-                return await databaseContext.Materials
-               .Include(material => material.Authors)
-                    .Where( x => x.Authors.Select( y => y.Id).Contains(authorId))
-               .Include(material => material.Categories)
-               .Include(material => material.Genres)
-               .Include(material => material.Publishers)
-               .Include(material => material.MaterialCopies)
-               .Where(publisher => publisher.DeletedAt == null )
-               .ToListAsync();
+                quariable = quariable.Where(material => material.Categories.Any(category => filter.CategoryIds.Contains(category.Id)));
             }
+
+            if(filter.GenreIds != null)
+            {
+                quariable = quariable.Where(material => material.Genres.Any(genre => filter.GenreIds.Contains(genre.Id)));
+            }
+
+            if (filter.PublisherIds != null)
+            {
+                quariable = quariable.Where(material => material.Publishers.Any(publisher => filter.PublisherIds.Contains(publisher.Id)));
+            }
+
+            if (filter.LibraryId != null)
+            {
+                quariable = quariable.Where(material => material.LibraryId == filter.LibraryId);
+            }
+
+            if(filter.Query != null)
+            {
+                quariable = quariable.Where(material => material.Title.Contains(filter.Query));
+            }
+
+            quariable = quariable
+                    .Skip(filter.PageSize * filter.PageNumber)
+                    .Take(filter.PageSize);
+            
+
+            return await quariable
+               .ToListAsync();
         }
 
         public async Task<Material> Update(string id, UpdateMaterialDTO material)

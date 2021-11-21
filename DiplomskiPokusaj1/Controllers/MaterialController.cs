@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DiplomskiPokusaj1.DTO.Create;
+using DiplomskiPokusaj1.DTO.Filter;
 using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
@@ -30,10 +31,10 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET: api/<MaterialController>
         [HttpGet]
-        public async Task<ActionResult<List<ViewMaterialDTO>>> GetAll([FromQuery] string authorId)
+        public async Task<ActionResult<List<ViewMaterialDTO>>> GetAll([FromQuery] FilterItemDTO filter)
         {
-            var result = await materialRepository.GetAll(authorId);
-            ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
+            var result = await materialRepository.GetAll(filter);
+            ControllerHelper.IncludeContentRange("Material", filter.PageNumber*filter.PageSize , filter.PageNumber * filter.PageSize + result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewMaterialDTO>>(result));
         }
 
