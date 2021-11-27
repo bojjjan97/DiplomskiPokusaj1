@@ -13,7 +13,7 @@ namespace DiplomskiPokusaj1.DTO.View
         public DateTime? ReturnDate { get; set; }
 
         public string LibraryId { get; set; }
-        public  ViewPublicUserDTO User { get; set; }
+        public  string UserId { get; set; }
         public  ICollection<ViewMaterialCopyDTO> MaterialCopies { get; set; }
         public IEnumerable<string> MaterialCopiesIds { get; set; }
         public virtual ViewReservationDTO Reservation { get; set; }

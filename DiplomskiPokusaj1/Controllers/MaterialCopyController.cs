@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DiplomskiPokusaj1.DTO.Create;
+using DiplomskiPokusaj1.DTO.Filter;
 using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
@@ -29,9 +30,9 @@ namespace DiplomskiPokusaj1.Controllers
         }
         // GET: api/<MaterialCopyController>
         [HttpGet]
-        public async Task<ActionResult<List<ViewMaterialCopyDTO>>> Get()
+        public async Task<ActionResult<List<ViewMaterialCopyDTO>>> Get([FromQuery] FilterMaterialCopyDTO filter)
         {
-            var result = await materialCopyRepository.GetAll();
+            var result = await materialCopyRepository.GetAll(filter);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewMaterialCopyDTO>>(result));
         }

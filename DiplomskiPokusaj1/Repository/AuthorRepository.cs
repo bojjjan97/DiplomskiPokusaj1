@@ -56,21 +56,12 @@ namespace DiplomskiPokusaj1.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Author>> GetAll(string authorId = null)
+        public async Task<ICollection<Author>> GetAll()
         {   
-            if(authorId == null)
-            {
                 return await databaseContext.Authors
                 .Where(author => author.DeletedAt == null)
                 .ToListAsync();
-            }
-            else
-            {
-                return await databaseContext.Authors
-               .Where(author => author.Id == authorId)
-               .Where(author => author.DeletedAt == null)
-               .ToListAsync();
-            }
+            
             
         }
 

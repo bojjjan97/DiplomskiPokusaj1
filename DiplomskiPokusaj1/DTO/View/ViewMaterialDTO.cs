@@ -21,6 +21,7 @@ namespace DiplomskiPokusaj1.DTO.View
 
         public  ICollection<ViewPublisherDTO> Publishers { get; set; }
         public IEnumerable<string> PublisersIds { get; set; }
+
         public  ICollection<ViewAuthorDTO> Authors { get; set; }
         public IEnumerable<string> AuthorsIds { get; set; }
 

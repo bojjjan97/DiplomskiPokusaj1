@@ -42,6 +42,7 @@ namespace DiplomskiPokusaj1.Repository
                 Id = Guid.NewGuid().ToString(),
                 Status = "reserved",
                 CreatedAt = DateTime.Now,
+                UserId = reservation.UserId,
                 MaterialCopies = await databaseContext.MaterialCopies.Where(materialCopies => reservation.MaterialCopiesIds.Contains(materialCopies.Id)).ToListAsync(),
                 LibraryId = reservation.LibraryId
             };

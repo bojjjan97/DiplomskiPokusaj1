@@ -32,9 +32,9 @@ namespace DiplomskiPokusaj1.Controllers
         // GET: api/<AuthorController>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<List<ViewAuthorDTO>>> GetAll([FromQuery] string authorId)
+        public async Task<ActionResult<List<ViewAuthorDTO>>> GetAll()
         {
-            var result = await authorRepository.GetAll(authorId);
+            var result = await authorRepository.GetAll();
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewAuthorDTO>>(result));
         }

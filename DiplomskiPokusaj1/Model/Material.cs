@@ -15,8 +15,6 @@ namespace DiplomskiPokusaj1.Model
         public string Description { get; set; }
         public string Isbn { get; set; }
         public int PageNumber { get; set; }
-        public virtual Library Library { get; set; }
-        public virtual string LibraryId { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; }
         public IEnumerable<string> CategoriesIds => Categories.Select(c => c.Id).ToList(); 

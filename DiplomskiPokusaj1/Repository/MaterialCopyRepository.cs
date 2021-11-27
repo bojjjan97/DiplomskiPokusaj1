@@ -1,4 +1,5 @@
-﻿using DiplomskiPokusaj1.Model;
+﻿using DiplomskiPokusaj1.DTO.Filter;
+using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -55,12 +56,25 @@ namespace DiplomskiPokusaj1.Repository
                .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<MaterialCopy>> GetAll()
+        public async Task<ICollection<MaterialCopy>> GetAll(FilterMaterialCopyDTO filter)
         {
-            return await databaseContext.MaterialCopies
+
+            var quariable = databaseContext.MaterialCopies
               .Include(materialCopy => materialCopy.Material)
-              .Where(materialCopy => materialCopy.DeletedAt == null)
-              .ToListAsync();
+              .Where(materialCopy => materialCopy.DeletedAt == null);
+
+            if(filter.LibraryId != null)
+            {
+                quariable = quariable.Where(libaray => libaray.LibraryId == filter.LibraryId);
+            }
+
+            if (filter.MaterialId != null)
+            {
+                quariable = quariable.Where(material => material.MaterialId == filter.MaterialId);
+            }
+
+            return await quariable
+               .ToListAsync();
         }
 
         public async Task<MaterialCopy> Update(string id, MaterialCopy materialCopy)

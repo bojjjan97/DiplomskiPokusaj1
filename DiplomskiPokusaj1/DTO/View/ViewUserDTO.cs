@@ -15,6 +15,5 @@ namespace DiplomskiPokusaj1.DTO.View
         public ViewAddressDTO ViewAddressDTO { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
-        public string ClientId { get; set; }
     }
 }

@@ -112,10 +112,7 @@ namespace DiplomskiPokusaj1.Repository
                 quariable = quariable.Where(material => material.Publishers.Any(publisher => filter.PublisherIds.Contains(publisher.Id)));
             }
 
-            if (filter.LibraryId != null)
-            {
-                quariable = quariable.Where(material => material.LibraryId == filter.LibraryId);
-            }
+           
 
             if(filter.Query != null)
             {

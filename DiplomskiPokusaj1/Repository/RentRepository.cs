@@ -24,6 +24,7 @@ namespace DiplomskiPokusaj1.Repository
 
             List<MaterialCopy> listToRent= new List<MaterialCopy>();
  
+            
             if (rent.ReservationId != null)
             {
                 var reservation = await databaseContext.Reservations.Where(reservation => reservation.Id == rent.ReservationId)
@@ -42,6 +43,8 @@ namespace DiplomskiPokusaj1.Repository
                     return null;
                 }
             }
+
+            
            
             var copiesToAdd2 = databaseContext.MaterialCopies.Where(materialCopy => rent.MaterialCopiesIds.Contains(materialCopy.Id));
 
@@ -49,12 +52,12 @@ namespace DiplomskiPokusaj1.Repository
             { 
                 listToRent.AddRange(copiesToAdd2);
             }
-
+            
             if (listToRent.Any(copy => copy.LibraryId != rent.LibraryId))
             {
                 return null;
             }
-
+            
             Rent newRent = new Rent
             {
                 Id = Guid.NewGuid().ToString(),

@@ -8,7 +8,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
 {
     public interface IAuthorRepository
     {
-        public Task<ICollection<Author>> GetAll(string authorId = null);
+        public Task<ICollection<Author>> GetAll();
         public Task<Author> Get(string id);
         public Task<Author> Create(Author author);
         public Task<Author> Update(string id, Author author);

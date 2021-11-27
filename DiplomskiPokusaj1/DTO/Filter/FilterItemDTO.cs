@@ -12,7 +12,6 @@ namespace DiplomskiPokusaj1.DTO.Filter
         public IEnumerable<string> CategoryIds { get; set; }
         public IEnumerable<string> GenreIds { get; set; }
         public IEnumerable<string> PublisherIds { get; set; }
-        public string LibraryId { get; set; }
         public bool Available { get; set; }
 
         public int PageNumber { get; set; } = 0;
