@@ -17,7 +17,7 @@ namespace DiplomskiPokusaj1.DTO
         public CreateAddressDTO AddressDTO { get; set; }
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
-        public string ClientId { get; set; }
         public string Role { get; set; }
+        public string LibraryId { get; set; }
     }
 }

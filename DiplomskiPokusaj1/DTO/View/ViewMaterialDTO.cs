@@ -13,6 +13,7 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Description { get; set; }
         public string Isbn { get; set; }
         public int PageNumber { get; set; }
+
         public  ICollection<ViewCategoryDTO> Categories { get; set; }
         public IEnumerable<string> CategoriesIds { get; set; }
 
@@ -25,7 +26,5 @@ namespace DiplomskiPokusaj1.DTO.View
         public  ICollection<ViewAuthorDTO> Authors { get; set; }
         public IEnumerable<string> AuthorsIds { get; set; }
 
-        public  ICollection<ViewMaterialCopyDTO> MaterialCopies { get; set; }
-        public IEnumerable<string> MaterialsCopiesIds { get; set; }
     }
 }

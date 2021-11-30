@@ -46,9 +46,9 @@ namespace DiplomskiPokusaj1.Repository
 
             
            
-            var copiesToAdd2 = databaseContext.MaterialCopies.Where(materialCopy => rent.MaterialCopiesIds.Contains(materialCopy.Id));
+            var copiesToAdd2 = databaseContext.MaterialCopies.Where(materialCopy => rent.MaterialCopiesIds.Contains(materialCopy.Id)).ToArray();
 
-            if(copiesToAdd2 != null)
+            if (copiesToAdd2.Count() > 0)
             { 
                 listToRent.AddRange(copiesToAdd2);
             }
@@ -95,6 +95,7 @@ namespace DiplomskiPokusaj1.Repository
                 .Include(rent => rent.MaterialCopies)
                     .ThenInclude(materialCopy => materialCopy.Material)
                 .Include(rent => rent.Reservation)
+                .Include(rent => rent.User)
                 .Where(rent => rent.Id == id && rent.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
@@ -103,8 +104,15 @@ namespace DiplomskiPokusaj1.Repository
         {
             return await databaseContext.Rents
               .Include(rent => rent.MaterialCopies)
-                   .ThenInclude(materialCopy => materialCopy.Material)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
               .Include(rent => rent.Reservation)
+              .Include(rent => rent.User)
               .Where(rent => rent.DeletedAt == null)
               .ToListAsync();
         }

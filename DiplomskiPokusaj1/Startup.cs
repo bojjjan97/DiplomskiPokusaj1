@@ -128,6 +128,7 @@ namespace DiplomskiPokusaj1
             services.AddScoped<IRentRepository, RentRepository>();
 
 
+
             services.AddCors();
         }
 

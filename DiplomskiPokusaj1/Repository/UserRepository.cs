@@ -84,8 +84,8 @@ namespace DiplomskiPokusaj1.Repository
                 Lastname = userDTO.LastName,
                 UserName = userDTO.Username,
                 Email = userDTO.Email,
-                PhoneNumber = userDTO.PhoneNumber,
-                ClientId = userDTO.ClientId,
+                Role = userDTO.Role,
+                LibraryId = userDTO.LibraryId,
                 Address = new Address
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -163,7 +163,7 @@ namespace DiplomskiPokusaj1.Repository
                 userToEdit.PhoneNumber = user.PhoneNumber;
                 userToEdit.Email = user.Email;
                 userToEdit.UserName = user.UserName;
-                userToEdit.ClientId = user.ClientId;
+                userToEdit.LibraryId = user.LibraryId;
                 userToEdit.Address = user.Address;
                 userToEdit.PostalCode = user.PostalCode;
 
