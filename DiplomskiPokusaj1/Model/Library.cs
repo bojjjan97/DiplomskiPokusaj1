@@ -15,6 +15,9 @@ namespace DiplomskiPokusaj1.Model
         public string Telephone { get; set; }
         public string Email { get; set; }
 
+        public virtual Image Image { get; set; }
+        public string ImageId { get; set; }
+
         public virtual Address Address { get; set; }
         public virtual ICollection<User> Employees { get; set; }
         public IEnumerable<string> EmployeesIds => Employees.Select(employee => employee.Id).ToList();

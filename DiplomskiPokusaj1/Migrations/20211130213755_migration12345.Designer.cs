@@ -3,14 +3,16 @@ using System;
 using DiplomskiPokusaj1.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiplomskiPokusaj1.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20211130213755_migration12345")]
+    partial class migration12345
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,9 +102,6 @@ namespace DiplomskiPokusaj1.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Lastname")
                         .HasColumnType("longtext");
 
@@ -110,8 +109,6 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Authors");
                 });
@@ -173,6 +170,12 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("AuhtorId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -180,23 +183,38 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FileName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FilePath")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("LibraryId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("MaterialId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("PublisherId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images");
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("LibraryId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("PublisherId");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Library", b =>
@@ -216,9 +234,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -232,8 +247,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Libraries");
                 });
@@ -252,9 +265,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Isbn")
                         .HasColumnType("longtext");
 
@@ -272,8 +282,6 @@ namespace DiplomskiPokusaj1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
 
                     b.HasIndex("LibraryId");
 
@@ -329,9 +337,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -342,8 +347,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Publishers");
                 });
@@ -465,9 +468,6 @@ namespace DiplomskiPokusaj1.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Lastname")
                         .HasColumnType("longtext");
 
@@ -519,8 +519,6 @@ namespace DiplomskiPokusaj1.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("ImageId");
 
                     b.HasIndex("LibraryId");
 
@@ -752,13 +750,31 @@ namespace DiplomskiPokusaj1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DiplomskiPokusaj1.Model.Author", b =>
+            modelBuilder.Entity("DiplomskiPokusaj1.Model.Image", b =>
                 {
-                    b.HasOne("DiplomskiPokusaj1.Model.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
+                    b.HasOne("DiplomskiPokusaj1.Model.Author", "Author")
+                        .WithMany("Images")
+                        .HasForeignKey("AuthorId");
 
-                    b.Navigation("Image");
+                    b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
+                        .WithMany("Images")
+                        .HasForeignKey("LibraryId");
+
+                    b.HasOne("DiplomskiPokusaj1.Model.Material", "Material")
+                        .WithMany("Images")
+                        .HasForeignKey("MaterialId");
+
+                    b.HasOne("DiplomskiPokusaj1.Model.Publisher", "Publisher")
+                        .WithMany("Images")
+                        .HasForeignKey("PublisherId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Library");
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Library", b =>
@@ -767,26 +783,14 @@ namespace DiplomskiPokusaj1.Migrations
                         .WithMany("Libraris")
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("DiplomskiPokusaj1.Model.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.Navigation("Address");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Material", b =>
                 {
-                    b.HasOne("DiplomskiPokusaj1.Model.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.HasOne("DiplomskiPokusaj1.Model.Library", null)
                         .WithMany("Materials")
                         .HasForeignKey("LibraryId");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.MaterialCopy", b =>
@@ -810,13 +814,7 @@ namespace DiplomskiPokusaj1.Migrations
                         .WithMany("Publishers")
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("DiplomskiPokusaj1.Model.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.Navigation("Address");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Rent", b =>
@@ -861,17 +859,11 @@ namespace DiplomskiPokusaj1.Migrations
                         .WithMany("Users")
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("DiplomskiPokusaj1.Model.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.HasOne("DiplomskiPokusaj1.Model.Library", "Library")
                         .WithMany("Employees")
                         .HasForeignKey("LibraryId");
 
                     b.Navigation("Address");
-
-                    b.Navigation("Image");
 
                     b.Navigation("Library");
                 });
@@ -996,16 +988,30 @@ namespace DiplomskiPokusaj1.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("DiplomskiPokusaj1.Model.Author", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Library", b =>
                 {
                     b.Navigation("Employees");
+
+                    b.Navigation("Images");
 
                     b.Navigation("Materials");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Material", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("MaterialCopies");
+                });
+
+            modelBuilder.Entity("DiplomskiPokusaj1.Model.Publisher", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("DiplomskiPokusaj1.Model.Reservation", b =>

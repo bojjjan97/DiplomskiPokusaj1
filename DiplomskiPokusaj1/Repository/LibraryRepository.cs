@@ -31,6 +31,7 @@ namespace DiplomskiPokusaj1.Repository
                 CreatedAt = DateTime.Now,
                 Telephone = library.Telephone,
                 Email = library.Email,
+                ImageId = library.ImageId,
                 //Employees = await databaseContext.Users.Where(user => library.EmployeesIds.Contains(user.Id)).ToListAsync(),
                 Address = new Address
                 {

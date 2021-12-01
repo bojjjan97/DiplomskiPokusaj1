@@ -87,6 +87,9 @@ namespace MassiveDynamicApi.DTO.Automapper
             CreateMap<Rent, CreateRentDTO>()
                 .ReverseMap();
 
+            CreateMap<Image, ViewImageDTO>()
+                .ReverseMap();
+
         }
     }
 }

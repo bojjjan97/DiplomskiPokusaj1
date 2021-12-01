@@ -14,6 +14,9 @@ namespace DiplomskiPokusaj1.Model
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public virtual Image Image { get; set; }
+        public string ImageId { get; set; }
+
         public virtual Address Address { get; set; }
         public virtual ICollection<Material> Materials { get; set; }
         [Required]

@@ -15,9 +15,11 @@ namespace DiplomskiPokusaj1.Model
         public string Lastname { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public string PhoneNumber { get; set; }
         public string Role { get; set; }
         public string ClientId { get; set; }
+
+        public virtual Image Image { get; set; }
+        public string ImageId { get; set; }
 
         public virtual Address Address { get; set; }
         public virtual ICollection<Rent> Rents { get; set; }

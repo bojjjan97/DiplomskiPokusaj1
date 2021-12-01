@@ -11,5 +11,7 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Biography { get; set; }
+        public ViewImageDTO Image { get; set; }
+        public string ImageId { get; set; }
     }
 }

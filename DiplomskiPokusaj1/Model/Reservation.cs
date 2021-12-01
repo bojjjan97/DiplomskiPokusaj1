@@ -11,6 +11,7 @@ namespace DiplomskiPokusaj1.Model
     {
         public string Id { get; set; }
         public string Status { get; set; }
+        public string UniqueCode { get; set; }
         public DateTime DateToReturn { get; set; }
 
         public virtual User User { get; set; }

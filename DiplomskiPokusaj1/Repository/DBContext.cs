@@ -21,6 +21,7 @@ namespace DiplomskiPokusaj1.Repository
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Rent> Rents { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public DBContext ([NotNullAttribute] DbContextOptions options) : base (options)
         {

@@ -12,5 +12,8 @@ namespace DiplomskiPokusaj1.DTO.Create
         public string Email { get; set; }
         public CreateAddressDTO Address { get; set; }
         public IEnumerable<string> EmployeesIds { get; set; }
+        public string FileName { get; set; }
+        public string File { get; set; }
+        public string ImageId {get;set;}
     }
 }

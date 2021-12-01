@@ -26,7 +26,8 @@ namespace DiplomskiPokusaj1.Repository
                 Firstname = author.Firstname,
                 Lastname = author.Lastname,
                 Biography = author.Biography,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                ImageId = author.ImageId
             };
 
             var trackedEntity = await databaseContext.Authors.AddAsync(newAuthor);
@@ -52,6 +53,7 @@ namespace DiplomskiPokusaj1.Repository
         public async Task<Author> Get(string id)
         {
             return await databaseContext.Authors
+                .Include(author => author.Image)
                 .Where(author => author.Id == id && author.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
@@ -59,6 +61,7 @@ namespace DiplomskiPokusaj1.Repository
         public async Task<ICollection<Author>> GetAll()
         {   
                 return await databaseContext.Authors
+                .Include(author => author.Image)
                 .Where(author => author.DeletedAt == null)
                 .ToListAsync();
             
@@ -76,6 +79,7 @@ namespace DiplomskiPokusaj1.Repository
             entityToUpdate.Firstname = author.Firstname;
             entityToUpdate.Lastname = author.Lastname;
             entityToUpdate.Biography = author.Biography;
+            entityToUpdate.ImageId = author.ImageId;
             entityToUpdate.UpdatedAt = DateTime.Now;
 
             var trackedEntity = databaseContext.Authors.Update(entityToUpdate);

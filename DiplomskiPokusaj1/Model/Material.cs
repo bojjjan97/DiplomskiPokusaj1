@@ -16,6 +16,9 @@ namespace DiplomskiPokusaj1.Model
         public string Isbn { get; set; }
         public int PageNumber { get; set; }
 
+        public virtual Image Image { get; set; }
+        public string ImageId { get; set; }
+
         public virtual ICollection<Category> Categories { get; set; }
         public IEnumerable<string> CategoriesIds => Categories.Select(c => c.Id).ToList(); 
 

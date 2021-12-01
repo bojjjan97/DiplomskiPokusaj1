@@ -10,5 +10,9 @@ namespace DiplomskiPokusaj1.DTO.Update
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Biography { get; set; }
+
+        public string ImageId { get; set; }
+        public string FileName { get; set; }
+        public string File { get; set; }
     }
 }

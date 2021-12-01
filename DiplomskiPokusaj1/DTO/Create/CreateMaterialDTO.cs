@@ -11,7 +11,10 @@ namespace DiplomskiPokusaj1.DTO.Create
         public string Description { get; set; }
         public string Isbn { get; set; }
         public int PageNumber { get; set; }
-        
+        public string FileName { get; set; }
+        public string File { get; set; }
+
+
         public IEnumerable<string> CategoriesIds { get; set; }
 
         

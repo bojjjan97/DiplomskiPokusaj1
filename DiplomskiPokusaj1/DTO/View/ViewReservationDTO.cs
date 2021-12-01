@@ -10,6 +10,7 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Id { get; set; }
         public string LibraryId { get; set; }
         public string Status { get; set; }
+        public string UniqueCode { get; set; }
         public IEnumerable<string> MaterialCopiesIds { get; set; }
 
         public string UserId { get; set; }

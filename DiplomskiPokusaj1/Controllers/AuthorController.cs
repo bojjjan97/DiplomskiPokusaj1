@@ -5,7 +5,9 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using DiplomskiPokusaj1.Storage.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,15 @@ namespace DiplomskiPokusaj1.Controllers
     {
         private readonly IMapper mapper;
         private readonly IAuthorRepository authorRepository;
+        IImageRepository imageRepository;
+        IFileMenager fileMenager;
 
-        public AuthorController(IMapper mapper, IAuthorRepository repository)
+        public AuthorController(IMapper mapper, IAuthorRepository repository, IImageRepository imageRepository, IFileMenager fileMenager)
         {
             this.mapper = mapper;
             authorRepository = repository;
+            this.imageRepository = imageRepository;
+            this.fileMenager = fileMenager;
         }
 
         // GET: api/<AuthorController>
@@ -57,6 +63,24 @@ namespace DiplomskiPokusaj1.Controllers
         {
             var author = mapper.Map<Author>(createAuthorDTO);
 
+            Image newImage = new Image();
+            if (createAuthorDTO.File != null)
+            {
+                try
+                {
+                    newImage.FilePath = await fileMenager.SaveFile(createAuthorDTO.File);
+                    newImage.FileName = createAuthorDTO.FileName;
+                }
+                catch (Exception e)
+                {
+                    _ = Console.Error.WriteLineAsync(e.Message);
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
+            }
+
+            var image = await imageRepository.Create(newImage);
+            author.Image = image;
+            author.ImageId = image.Id;
             var result = await authorRepository.Create(author);
 
             if (result == null)

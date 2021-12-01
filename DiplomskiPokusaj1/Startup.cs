@@ -2,6 +2,8 @@ using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository;
 using DiplomskiPokusaj1.Repository.Interface;
+using DiplomskiPokusaj1.Storage;
+using DiplomskiPokusaj1.Storage.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -126,6 +128,8 @@ namespace DiplomskiPokusaj1
             services.AddScoped<ILibraryRepository, LibraryRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRentRepository, RentRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IFileMenager, FileMenager>();
 
 
 

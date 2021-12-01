@@ -5,6 +5,8 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using DiplomskiPokusaj1.Storage.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,17 @@ namespace DiplomskiPokusaj1.Controllers
 
         private readonly IMapper mapper;
         private readonly ILibraryRepository libraryRepository;
+        IImageRepository imageRepository;
+        IFileMenager fileMenager;
 
-        public LibraryController(IMapper mapper, ILibraryRepository repository)
+
+
+        public LibraryController(IMapper mapper, ILibraryRepository repository, IImageRepository imageRepository, IFileMenager fileMenager)
         {
             this.mapper = mapper;
             libraryRepository = repository;
+            this.imageRepository = imageRepository;
+            this.fileMenager = fileMenager;
         }
         // GET: api/<LibraryController>
         [HttpGet]
@@ -50,6 +58,25 @@ namespace DiplomskiPokusaj1.Controllers
         [HttpPost]
         public async Task<ActionResult<ViewLibraryDTO>> Post([FromBody] CreateLibraryDTO createLibraryDTO)
         {
+
+            Image newImage = new Image();
+            if (createLibraryDTO.File != null)
+            {
+                try
+                {
+                    newImage.FilePath = await fileMenager.SaveFile(createLibraryDTO.File);
+                    newImage.FileName = createLibraryDTO.FileName;
+                }
+                catch (Exception e)
+                {
+                    _ = Console.Error.WriteLineAsync(e.Message);
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
+            }
+
+            var image = await imageRepository.Create(newImage);
+            createLibraryDTO.ImageId = image.Id;
+
 
             var result = await libraryRepository.Create(createLibraryDTO);
 

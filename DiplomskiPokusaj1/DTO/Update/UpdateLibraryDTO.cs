@@ -10,6 +10,10 @@ namespace DiplomskiPokusaj1.DTO.Update
         public string Name { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
+        public string ImageId { get; set; }
+        public string FileName { get; set; }
+        public string File { get; set; }
+    
         public UpdateAddressDTO Address { get; set; }
         public IEnumerable<string> EmployeesIds { get; set; }
     }

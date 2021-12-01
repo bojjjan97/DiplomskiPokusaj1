@@ -16,6 +16,10 @@ namespace DiplomskiPokusaj1.Model
         public string Biography { get; set; }
 
         public virtual ICollection<Material> Materials { get; set; }
+
+        public virtual Image Image { get; set; }
+        public string ImageId { get; set; }
+
         public DateTime CreatedAt { get; set ; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
