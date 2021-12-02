@@ -74,10 +74,10 @@ namespace DiplomskiPokusaj1.Controllers
             if (userRequiringAccess != null &&
                 (userRequiringAccess.Id == result.Id
                 || await userManager.IsInRoleAsync(userRequiringAccess, "Administrator")
-                || await userManager.IsInRoleAsync(userRequiringAccess, "Secretary")
+                || await userManager.IsInRoleAsync(userRequiringAccess, "Librarian")
                 ))
             {
-                return Ok(_mapper.Map<ViewPublicUserDTO>(result));
+                return Ok(_mapper.Map<ViewUserDTO>(result));
             }
             else
             {

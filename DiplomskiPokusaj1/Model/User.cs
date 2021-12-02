@@ -15,6 +15,7 @@ namespace DiplomskiPokusaj1.Model
         public string Lastname { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
+        [NotMapped]
         public string Role { get; set; }
         public string ClientId { get; set; }
 

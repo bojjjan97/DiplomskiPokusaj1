@@ -6,6 +6,7 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,17 +23,21 @@ namespace DiplomskiPokusaj1.Controllers
     {
         private readonly IMapper mapper;
         private readonly IMaterialCopyRepository materialCopyRepository;
+        private UserManager<User> userManager;
 
-        public MaterialCopyController(IMapper mapper, IMaterialCopyRepository repository)
+        public MaterialCopyController(IMapper mapper, IMaterialCopyRepository repository, Microsoft.AspNetCore.Identity.UserManager<User> userManager)
         {
             this.mapper = mapper;
             materialCopyRepository = repository;
+            this.userManager = userManager;
         }
         // GET: api/<MaterialCopyController>
         [HttpGet]
         public async Task<ActionResult<List<ViewMaterialCopyDTO>>> Get([FromQuery] FilterMaterialCopyDTO filter)
         {
-            var result = await materialCopyRepository.GetAll(filter);
+            User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
+
+            var result = await materialCopyRepository.GetAll(filter, userRequiringAccess);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewMaterialCopyDTO>>(result));
         }

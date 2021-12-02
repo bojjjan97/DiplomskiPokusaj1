@@ -12,7 +12,9 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ViewAddressDTO ViewAddressDTO { get; set; }
+        public ViewAddressDTO Address { get; set; }
+        public string LibraryId { get; set; }
+
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
     }

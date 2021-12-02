@@ -92,8 +92,16 @@ namespace DiplomskiPokusaj1.Repository
         public async Task<Rent> Get(string id)
         {
             return await databaseContext.Rents
-                .Include(rent => rent.MaterialCopies)
-                    .ThenInclude(materialCopy => materialCopy.Material)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
+              .Include(rent => rent.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
+
+
                 .Include(rent => rent.Reservation)
                 .Include(rent => rent.User)
                 .Where(rent => rent.Id == id && rent.DeletedAt == null)

@@ -32,7 +32,7 @@ namespace DiplomskiPokusaj1.Repository
                 Telephone = library.Telephone,
                 Email = library.Email,
                 ImageId = library.ImageId,
-                //Employees = await databaseContext.Users.Where(user => library.EmployeesIds.Contains(user.Id)).ToListAsync(),
+                Employees = await databaseContext.Users.Where(user => library.EmployeesIds.Contains(user.Id)).ToListAsync(),
                 Address = new Address
                 {
                     Id = Guid.NewGuid().ToString(),

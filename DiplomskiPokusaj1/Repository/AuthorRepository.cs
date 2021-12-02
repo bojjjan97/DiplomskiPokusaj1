@@ -27,7 +27,8 @@ namespace DiplomskiPokusaj1.Repository
                 Lastname = author.Lastname,
                 Biography = author.Biography,
                 CreatedAt = DateTime.Now,
-                ImageId = author.ImageId
+                ImageId = author.ImageId,
+                Image = author.Image
             };
 
             var trackedEntity = await databaseContext.Authors.AddAsync(newAuthor);

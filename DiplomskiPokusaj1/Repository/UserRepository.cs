@@ -89,11 +89,11 @@ namespace DiplomskiPokusaj1.Repository
                 Address = new Address
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Line1 = userDTO.AddressDTO.Line1,
-                    Line2 = userDTO.AddressDTO.Line2,
-                    City = userDTO.AddressDTO.City,
-                    PostalCode = userDTO.AddressDTO.PostalCode,
-                    Country = userDTO.AddressDTO.Country,
+                    Line1 = userDTO.Address.Line1,
+                    Line2 = userDTO.Address.Line2,
+                    City = userDTO.Address.City,
+                    PostalCode = userDTO.Address.PostalCode,
+                    Country = userDTO.Address.Country,
                     CreatedAt = DateTime.Now
 
                 }
@@ -133,7 +133,7 @@ namespace DiplomskiPokusaj1.Repository
             if (result != null)
             {
                 var roles = await userManager.GetRolesAsync(result);
-                result.Role = (roles != null && roles.Count > 0) ? roles[0] : "Client";
+                result.Role = (roles != null && roles.Count > 0) ? roles[0] : "User";
             }
 
             return result;
@@ -146,7 +146,7 @@ namespace DiplomskiPokusaj1.Repository
             foreach (var user in result)
             {
                 var roles = await userManager.GetRolesAsync(user);
-                user.Role = (roles != null && roles.Count > 0) ? roles[0] : "Client";
+                user.Role = (roles != null && roles.Count > 0) ? roles[0] : "User";
             }
 
             return result;

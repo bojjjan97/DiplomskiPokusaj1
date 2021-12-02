@@ -9,7 +9,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
 {
     public interface IMaterialCopyRepository
     {
-        public Task<ICollection<MaterialCopy>> GetAll(FilterMaterialCopyDTO filter);
+        public Task<ICollection<MaterialCopy>> GetAll(FilterMaterialCopyDTO filter, User userRequiringAccess);
         public Task<MaterialCopy> Get(string id);
         public Task<MaterialCopy> Create(MaterialCopy materialCopy);
         public Task<MaterialCopy> Update(string id, MaterialCopy materialCopy);

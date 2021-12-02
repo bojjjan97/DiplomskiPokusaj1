@@ -81,7 +81,13 @@ namespace DiplomskiPokusaj1.Repository
         {
             return await databaseContext.Reservations
                 .Include(reservation => reservation.MaterialCopies)
-                .ThenInclude(materialCopies => materialCopies.Material)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
+                .Include(reservation => reservation.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
+              .Include(reservation => reservation.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
+              .Include(reservation => reservation.MaterialCopies)
+                   .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
                 .Include(reservation => reservation.Rent)
                .Where(reservation => reservation.DeletedAt == null).ToListAsync();
         }
