@@ -6,7 +6,6 @@ using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DiplomskiPokusaj1.Repository
 {
