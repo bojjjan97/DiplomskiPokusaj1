@@ -1,6 +1,7 @@
 ﻿using DiplomskiPokusaj1.DTO.Create;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace DiplomskiPokusaj1.Repository
     {
 
         DBContext databaseContext;
+        private UserManager<User> userManager;
 
-        public RentRepository(DBContext databaseContext)
+        public RentRepository(DBContext databaseContext, UserManager<User> userManager)
         {
             this.databaseContext = databaseContext;
+            this.userManager = userManager;
         }
 
         public async Task<Rent> Create(CreateRentDTO rent)
@@ -108,9 +111,9 @@ namespace DiplomskiPokusaj1.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Rent>> GetAll()
+        public async Task<ICollection<Rent>> GetAll(User userRequiringAccess)
         {
-            return await databaseContext.Rents
+            var quariable =  databaseContext.Rents
               .Include(rent => rent.MaterialCopies)
                    .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
               .Include(rent => rent.MaterialCopies)
@@ -121,8 +124,18 @@ namespace DiplomskiPokusaj1.Repository
                    .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
               .Include(rent => rent.Reservation)
               .Include(rent => rent.User)
-              .Where(rent => rent.DeletedAt == null)
-              .ToListAsync();
+              .Where(rent => rent.DeletedAt == null);
+
+            if (userRequiringAccess != null && await userManager.IsInRoleAsync(userRequiringAccess, "Librarian") && userRequiringAccess.LibraryId != null)
+            {
+                quariable = quariable.Where(libaray => libaray.LibraryId == userRequiringAccess.LibraryId);
+            }
+            else if (await userManager.IsInRoleAsync(userRequiringAccess, "Librarian"))
+            {
+                return new List<Rent>();
+            }
+
+            return await quariable.ToListAsync();
         }
 
         public async Task<Rent> checkIn(string id)

@@ -89,7 +89,7 @@ namespace DiplomskiPokusaj1.Repository
               .Include(material => material.Categories)
               .Include(material => material.Genres)
               .Include(material => material.Publishers)
-              .Include(material => material.MaterialCopies)
+              .Include(material => material.MaterialCopies).ThenInclude(copy => copy.Library)
               .Where(publisher => publisher.DeletedAt == null);
 
             if (filter.AuthorIds != null)
@@ -111,10 +111,12 @@ namespace DiplomskiPokusaj1.Repository
             {
                 quariable = quariable.Where(material => material.Publishers.Any(publisher => filter.PublisherIds.Contains(publisher.Id)));
             }
+            if (filter.LibraryId != null)
+            {
+                quariable = quariable.Where(material => material.MaterialCopies.Any(copy => copy.LibraryId == filter.LibraryId));
+            }
 
-           
-
-            if(filter.Query != null)
+            if (filter.Query != null)
             {
                 quariable = quariable.Where(material => material.Title.Contains(filter.Query));
             }
@@ -122,7 +124,6 @@ namespace DiplomskiPokusaj1.Repository
             quariable = quariable
                     .Skip(filter.PageSize * filter.PageNumber)
                     .Take(filter.PageSize);
-            
 
             return await quariable
                .ToListAsync();

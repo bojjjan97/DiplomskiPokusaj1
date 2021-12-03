@@ -35,7 +35,7 @@ namespace DiplomskiPokusaj1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ViewMaterialCopyDTO>>> Get([FromQuery] FilterMaterialCopyDTO filter)
         {
-            User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
+            User userRequiringAccess = HttpContext.User != null ? await userManager.GetUserAsync(HttpContext.User) : null;
 
             var result = await materialCopyRepository.GetAll(filter, userRequiringAccess);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);

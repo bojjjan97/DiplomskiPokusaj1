@@ -9,7 +9,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
 {
     public interface IRentRepository
     {
-        public Task<ICollection<Rent>> GetAll();
+        public Task<ICollection<Rent>> GetAll(User userRequiringAccess);
         public Task<Rent> Get(string id);
         public Task<Rent> Create(CreateRentDTO rent);
         public Task<bool> Delete(string id);

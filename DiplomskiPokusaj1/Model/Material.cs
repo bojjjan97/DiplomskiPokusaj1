@@ -33,7 +33,7 @@ namespace DiplomskiPokusaj1.Model
 
 
         public virtual ICollection<MaterialCopy> MaterialCopies { get; set; }
-        public IEnumerable<string> MaterialsCopiesIds => MaterialCopies.Select(c => c.Id).ToList();
+        public IEnumerable<string> MaterialCopiesIds => MaterialCopies.Select(c => c.Id).ToList();
 
         [Required]
         public DateTime CreatedAt { get ; set ; }

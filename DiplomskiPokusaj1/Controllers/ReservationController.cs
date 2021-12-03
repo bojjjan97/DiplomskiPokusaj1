@@ -3,7 +3,9 @@ using DiplomskiPokusaj1.DTO.Create;
 using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
+using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,13 @@ namespace DiplomskiPokusaj1.Controllers
 
         private readonly IMapper mapper;
         private readonly IReservationRepository reservationRepository;
+        private UserManager<User> userManager;
 
-        public ReservationController(IMapper mapper, IReservationRepository repository)
+        public ReservationController(IMapper mapper, IReservationRepository repository, UserManager<User> userManager)
         {
             this.mapper = mapper;
             reservationRepository = repository;
+            this.userManager = userManager;
         }
 
 
@@ -34,7 +38,9 @@ namespace DiplomskiPokusaj1.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ViewReservationDTO>>> Get()
         {
-            var result = await reservationRepository.GetAll();
+            User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
+
+            var result = await reservationRepository.GetAll(userRequiringAccess);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewReservationDTO>>(result));
         }

@@ -10,7 +10,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
 {
     public interface IReservationRepository
     {
-        public Task<ICollection<Reservation>> GetAll();
+        public Task<ICollection<Reservation>> GetAll(User userRequiringAccess);
         public Task<Reservation> Get(string id);
         public Task<Reservation> Create(CreateReservationDTO author);
         public Task<Reservation> Update(string id, UpdateReservationDTO author);

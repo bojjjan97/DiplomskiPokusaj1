@@ -4,6 +4,7 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,18 +21,22 @@ namespace DiplomskiPokusaj1.Controllers
     {
         private readonly IMapper mapper;
         private readonly IRentRepository rentRepository;
+        private UserManager<User> userManager;
 
-        public RentController(IMapper mapper, IRentRepository repository)
+        public RentController(IMapper mapper, IRentRepository repository, UserManager<User> userManager)
         {
             this.mapper = mapper;
             rentRepository = repository;
+            this.userManager = userManager;
         }
 
         // GET: api/<RentController>
         [HttpGet]
         public async Task<ActionResult<List<ViewRentDTO>>> Get()
         {
-            var result = await rentRepository.GetAll();
+            User userRequiringAccess = await userManager.GetUserAsync(HttpContext.User);
+
+            var result = await rentRepository.GetAll(userRequiringAccess);
             ControllerHelper.IncludeContentRange("client", 0, result.Count, result.Count, Request);
             return Ok(mapper.Map<List<ViewRentDTO>>(result));
         }

@@ -2,6 +2,7 @@
 using DiplomskiPokusaj1.DTO.Update;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,11 @@ namespace DiplomskiPokusaj1.Repository
     public class ReservationRepository : IReservationRepository
     {
         DBContext databaseContext;
-
-        public ReservationRepository(DBContext databaseContext)
+        private UserManager<User> userManager;
+        public ReservationRepository(DBContext databaseContext, UserManager<User> userManager)
         {
             this.databaseContext = databaseContext;
+            this.userManager = userManager;
         }
 
         public async Task<Reservation> Create(CreateReservationDTO reservation)
@@ -77,9 +79,9 @@ namespace DiplomskiPokusaj1.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Reservation>> GetAll()
+        public async Task<ICollection<Reservation>> GetAll(User userRequiringAccess)
         {
-            return await databaseContext.Reservations
+            var quariable = databaseContext.Reservations
                 .Include(reservation => reservation.MaterialCopies)
                    .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
                 .Include(reservation => reservation.MaterialCopies)
@@ -89,7 +91,18 @@ namespace DiplomskiPokusaj1.Repository
               .Include(reservation => reservation.MaterialCopies)
                    .ThenInclude(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
                 .Include(reservation => reservation.Rent)
-               .Where(reservation => reservation.DeletedAt == null).ToListAsync();
+               .Where(reservation => reservation.DeletedAt == null);
+
+            if (userRequiringAccess != null && await userManager.IsInRoleAsync(userRequiringAccess, "Librarian") && userRequiringAccess.LibraryId != null)
+            {
+                quariable = quariable.Where(libaray => libaray.LibraryId == userRequiringAccess.LibraryId);
+            }
+            else if (await userManager.IsInRoleAsync(userRequiringAccess, "Librarian"))
+            {
+                return new List<Reservation>();
+            }
+
+            return await quariable.ToListAsync();
         }
 
         public async Task<Reservation> Update(string id, UpdateReservationDTO updateReservationDTO)

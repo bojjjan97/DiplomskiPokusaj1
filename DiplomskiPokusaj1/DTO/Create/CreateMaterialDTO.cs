@@ -24,6 +24,7 @@ namespace DiplomskiPokusaj1.DTO.Create
         public IEnumerable<string> PublisersIds { get; set; }
        
         public IEnumerable<string> AuthorsIds { get; set; }
+        public IEnumerable<string> MaterialCopiesIds { get; set; }
 
        
         public IEnumerable<string> MaterialsCopiesCode { get; set; }

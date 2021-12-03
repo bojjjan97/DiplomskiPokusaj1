@@ -70,7 +70,7 @@ namespace DiplomskiPokusaj1.Repository
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
-              .Where(materialCopy => materialCopy.DeletedAt == null);
+              .Where(materialCopy => materialCopy.DeletedAt == null && materialCopy.Material.DeletedAt == null);
 
             if(filter.LibraryId != null)
             {
@@ -86,7 +86,7 @@ namespace DiplomskiPokusaj1.Repository
             {
                 quariable = quariable.Where(libaray => libaray.LibraryId == userRequiringAccess.LibraryId);
             }
-            else if(await userManager.IsInRoleAsync(userRequiringAccess, "Librarian"))
+            else if(userRequiringAccess != null &&  await userManager.IsInRoleAsync(userRequiringAccess, "Librarian"))
             {
                 return new List<MaterialCopy>();
             }
