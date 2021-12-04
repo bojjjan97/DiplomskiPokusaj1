@@ -39,7 +39,7 @@ namespace DiplomskiPokusaj1.Controllers
             {
                 var content = await fileMenager.ReadFile(result.FilePath);
                 var file =  File(content, "image/jpeg" , result.FileName);
-                return Ok(content);
+                return Ok(file);
             }
             else
             {
