@@ -14,6 +14,5 @@ namespace DiplomskiPokusaj1.DTO.Create
         public IEnumerable<string> EmployeesIds { get; set; }
         public string FileName { get; set; }
         public string File { get; set; }
-        public string ImageId {get;set;}
     }
 }

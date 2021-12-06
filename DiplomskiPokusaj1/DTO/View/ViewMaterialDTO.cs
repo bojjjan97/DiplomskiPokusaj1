@@ -14,6 +14,9 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Isbn { get; set; }
         public int PageNumber { get; set; }
 
+        public ViewImageDTO Image { get; set; }
+        public string ImageId { get; set; }
+
         public  ICollection<ViewCategoryDTO> Categories { get; set; }
         public IEnumerable<string> CategoriesIds { get; set; }
 

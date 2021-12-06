@@ -20,7 +20,7 @@ namespace DiplomskiPokusaj1.Repository
             this.databaseContext = databaseContext;
         }
 
-        public async Task<Library> Create(CreateLibraryDTO library)
+        public async Task<Library> Create(CreateLibraryDTO library, Image newImage)
         {
 
             
@@ -31,8 +31,9 @@ namespace DiplomskiPokusaj1.Repository
                 CreatedAt = DateTime.Now,
                 Telephone = library.Telephone,
                 Email = library.Email,
-                ImageId = library.ImageId,
                 Employees = await databaseContext.Users.Where(user => library.EmployeesIds.Contains(user.Id)).ToListAsync(),
+                Image = newImage,
+                ImageId = newImage.Id,
                 Address = new Address
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -71,6 +72,7 @@ namespace DiplomskiPokusaj1.Repository
             return await databaseContext.Libraries
                 .Include(library => library.Employees)
                 .Include(library => library.Address)
+                .Include(library => library.Image)
                 .Where(library => library.Id == id && library.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
@@ -80,6 +82,7 @@ namespace DiplomskiPokusaj1.Repository
             return await databaseContext.Libraries
                .Include(library => library.Employees)
                .Include(library => library.Address)
+               .Include(library => library.Image)
                .Where(library => library.DeletedAt == null)
                .ToListAsync();
         }

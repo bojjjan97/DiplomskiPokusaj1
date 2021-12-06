@@ -20,7 +20,7 @@ namespace DiplomskiPokusaj1.Repository
             this.databaseContext = databaseContext;
         }
 
-        public async Task<Material> Create(CreateMaterialDTO material)
+        public async Task<Material> Create(CreateMaterialDTO material,Image newImage)
         {
             Material newMaterial = new Material
             {
@@ -34,7 +34,9 @@ namespace DiplomskiPokusaj1.Repository
                 Categories = await databaseContext.Categories.Where(category => material.CategoriesIds.Contains(category.Id)).ToListAsync(),
                 Genres = await databaseContext.Genres.Where(genre => material.GenresIds.Contains(genre.Id)).ToListAsync(),
                 Publishers = await databaseContext.Publishers.Where(publisher => material.PublisersIds.Contains(publisher.Id)).Include(publisher => publisher.Address).ToListAsync(),
-                MaterialCopies = new List<MaterialCopy>()
+                MaterialCopies = new List<MaterialCopy>(),
+                Image = newImage,
+                ImageId = newImage.Id
 
             };
 
@@ -77,6 +79,7 @@ namespace DiplomskiPokusaj1.Repository
                .Include(material => material.Genres)
                .Include(material => material.Publishers)
                .Include(material => material.MaterialCopies)
+               .Include(material => material.Image)
                .Where(material => material.Id == id && material.DeletedAt == null)
                .FirstOrDefaultAsync();
         }
@@ -90,6 +93,7 @@ namespace DiplomskiPokusaj1.Repository
               .Include(material => material.Genres)
               .Include(material => material.Publishers)
               .Include(material => material.MaterialCopies).ThenInclude(copy => copy.Library)
+              .Include(material => material.Image)
               .Where(publisher => publisher.DeletedAt == null);
 
             if (filter.AuthorIds != null)

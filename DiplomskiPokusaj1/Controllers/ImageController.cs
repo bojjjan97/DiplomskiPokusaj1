@@ -31,15 +31,17 @@ namespace DiplomskiPokusaj1.Controllers
 
         // GET api/<ImageController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<byte[]>> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             var result = await imageRepository.Get(id);
 
             if (result != null && result.FilePath != null && result.FileName != null)
             {
                 var content = await fileMenager.ReadFile(result.FilePath);
-                var file =  File(content, "image/jpeg" , result.FileName);
-                return Ok(file);
+                var file =  File(content, "application/download" , result.FileName);
+
+                byte[] fileBytes = System.IO.File.ReadAllBytes(result.FilePath);
+                return file;
             }
             else
             {

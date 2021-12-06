@@ -11,6 +11,10 @@ namespace DiplomskiPokusaj1.DTO.View
         public string Name { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
+
+        public ViewImageDTO Image { get; set; }
+        public string ImageId { get; set; }
+
         public ViewAddressDTO Address { get; set; }
         public IEnumerable<string> EmployeesIds { get; set; }
     }

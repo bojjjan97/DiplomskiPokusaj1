@@ -13,7 +13,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
     {
         public Task<ICollection<Material>> GetAll(FilterItemDTO filter = null);
         public Task<Material> Get( string id);
-        public Task<Material> Create(CreateMaterialDTO material);
+        public Task<Material> Create(CreateMaterialDTO material, Image newImage);
         public Task<Material> Update(string id, UpdateMaterialDTO material);
         public Task<bool> Delete(string id);
     }

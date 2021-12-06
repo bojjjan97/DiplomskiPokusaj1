@@ -12,7 +12,7 @@ namespace DiplomskiPokusaj1.Repository.Interface
     {
         public Task<ICollection<Library>> GetAll();
         public Task<Library> Get(string id);
-        public Task<Library> Create(CreateLibraryDTO library);
+        public Task<Library> Create(CreateLibraryDTO library, Image newImage);
         public Task<Library> Update(string id, UpdateLibraryDTO library);
         public Task<bool> Delete(string id);
     }

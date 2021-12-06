@@ -75,10 +75,9 @@ namespace DiplomskiPokusaj1.Controllers
             }
 
             var image = await imageRepository.Create(newImage);
-            createLibraryDTO.ImageId = image.Id;
 
 
-            var result = await libraryRepository.Create(createLibraryDTO);
+            var result = await libraryRepository.Create(createLibraryDTO, image);
 
             if (result == null)
             {

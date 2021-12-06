@@ -6,6 +6,8 @@ using DiplomskiPokusaj1.DTO.View;
 using DiplomskiPokusaj1.Helper;
 using DiplomskiPokusaj1.Model;
 using DiplomskiPokusaj1.Repository.Interface;
+using DiplomskiPokusaj1.Storage.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,15 @@ namespace DiplomskiPokusaj1.Controllers
     {
         private readonly IMapper mapper;
         private readonly IMaterialRepository materialRepository;
+        IImageRepository imageRepository;
+        IFileMenager fileMenager;
 
-        public MaterialController(IMapper mapper, IMaterialRepository repository)
+        public MaterialController(IMapper mapper, IMaterialRepository repository, IImageRepository imageRepository, IFileMenager fileMenager)
         {
             this.mapper = mapper;
             materialRepository = repository;
+            this.imageRepository = imageRepository;
+            this.fileMenager = fileMenager;
         }
 
         // GET: api/<MaterialController>
@@ -52,7 +58,24 @@ namespace DiplomskiPokusaj1.Controllers
         public async Task<ActionResult<ViewMaterialDTO>> Post([FromBody] CreateMaterialDTO createMaterialDTO)
         {
 
-            var result = await materialRepository.Create(createMaterialDTO);
+            Image newImage = new Image();
+            if (createMaterialDTO.File != null)
+            {
+                try
+                {
+                    newImage.FilePath = await fileMenager.SaveFile(createMaterialDTO.File);
+                    newImage.FileName = createMaterialDTO.FileName;
+                }
+                catch (Exception e)
+                {
+                    _ = Console.Error.WriteLineAsync(e.Message);
+                    return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                }
+            }
+
+            var image = await imageRepository.Create(newImage);
+
+            var result = await materialRepository.Create(createMaterialDTO, image);
 
             if (result == null)
             {
