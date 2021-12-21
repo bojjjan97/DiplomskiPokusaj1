@@ -145,7 +145,7 @@ namespace DiplomskiPokusaj1.Repository
                 .ToList()
                 .Any(rent => rent.MaterialCopiesIds.Contains(materialCopy.Id));
 
-            return reservations && rents;
+            return reservations || rents;
         }
     }
 }
