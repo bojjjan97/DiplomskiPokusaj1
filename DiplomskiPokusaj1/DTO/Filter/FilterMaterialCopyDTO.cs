@@ -9,5 +9,6 @@ namespace DiplomskiPokusaj1.DTO.Filter
     {
         public string LibraryId { get; set; }
         public string MaterialId { get; set; }
+        public bool? Available { get; set; }
     }
 }

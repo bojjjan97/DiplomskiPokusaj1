@@ -52,14 +52,20 @@ namespace DiplomskiPokusaj1.Repository
         }
 
         public async Task<MaterialCopy> Get(string id)
-        {
-            return await databaseContext.MaterialCopies
+        {   
+
+            MaterialCopy copy = await databaseContext.MaterialCopies
                .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Genres)
                .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
                .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
                .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
+               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Image)
                .Where(materialCopy => materialCopy.Id == id && materialCopy.DeletedAt == null)
                .FirstOrDefaultAsync();
+
+            copy.Available = !checkIfCopyNotAvailable(copy);
+
+            return copy;
         }
 
         public async Task<ICollection<MaterialCopy>> GetAll(FilterMaterialCopyDTO filter, User userRequiringAccess)
@@ -70,6 +76,7 @@ namespace DiplomskiPokusaj1.Repository
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Categories)
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Publishers)
               .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Authors)
+              .Include(materialCopy => materialCopy.Material).ThenInclude(material => material.Image)
               .Where(materialCopy => materialCopy.DeletedAt == null && materialCopy.Material.DeletedAt == null);
 
             if(filter.LibraryId != null)
@@ -81,7 +88,7 @@ namespace DiplomskiPokusaj1.Repository
             {
                 quariable = quariable.Where(material => material.MaterialId == filter.MaterialId);
             }
-
+            
             if (userRequiringAccess != null && await userManager.IsInRoleAsync(userRequiringAccess, "Librarian") && userRequiringAccess.LibraryId != null)
             {
                 quariable = quariable.Where(libaray => libaray.LibraryId == userRequiringAccess.LibraryId);
@@ -91,8 +98,21 @@ namespace DiplomskiPokusaj1.Repository
                 return new List<MaterialCopy>();
             }
 
-            return await quariable
+            var resultList = await quariable
                .ToListAsync();
+
+            foreach(var c in resultList)
+            {
+                c.Available = !checkIfCopyNotAvailable(c);
+            }
+
+            if (filter.Available != null)
+            {
+                resultList = resultList.Where(material => material.Available == filter.Available).ToList();
+            }
+
+
+            return resultList;
         }
 
         public async Task<MaterialCopy> Update(string id, MaterialCopy materialCopy)
@@ -109,6 +129,23 @@ namespace DiplomskiPokusaj1.Repository
             var trackedEntity = databaseContext.MaterialCopies.Update(entityToUpdate);
             await databaseContext.SaveChangesAsync();
             return trackedEntity.Entity;
+        }
+
+        public bool checkIfCopyNotAvailable(MaterialCopy materialCopy)
+        {
+            var reservations = databaseContext.Reservations
+                .Include(reservation => reservation.MaterialCopies)
+                .Where(reservation => reservation.DeletedAt == null && reservation.Status == "reserved")
+                .ToList()
+                .Any(reservation => reservation.MaterialCopiesIds.Contains(materialCopy.Id));
+
+            var rents = databaseContext.Rents
+                .Include(rent => rent.MaterialCopies)
+                .Where(rent => rent.DeletedAt == null && rent.ReturnDate == null)
+                .ToList()
+                .Any(rent => rent.MaterialCopiesIds.Contains(materialCopy.Id));
+
+            return reservations && rents;
         }
     }
 }

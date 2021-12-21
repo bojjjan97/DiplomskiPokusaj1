@@ -12,6 +12,8 @@ namespace DiplomskiPokusaj1.Model
         [Required]
         public string Id { get; set; }
         public string UniqueCode { get; set; }
+        [NotMapped]
+        public bool Available { get; set; }  
 
         public Library Library { get; set; }
         public string LibraryId { get; set; }
